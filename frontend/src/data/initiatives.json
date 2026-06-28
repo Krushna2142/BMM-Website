@@ -1,0 +1,250 @@
+{
+  "page": {
+    "title": "BMM Initiatives",
+    "descriptionEn": "As you are aware, BMM is bringing so many initiatives to you. All these initiatives help us unite and build our community stronger. Most of these initiatives are free of cost. However, we do have our admin expenses. Thus, we are making an appeal for your generous donation that will help us to offset this cost. Thank you for your consideration and continued support.",
+    "descriptionMr": "तुम्हाला माहितच आहे की बृहन्महाराष्ट्र मंडळ तुमच्यासाठी अनेक उपक्रम राबवत आहे. या सर्व उपक्रमांमुळे आपला समुदाय एकत्र येण्यास आणि अधिक मजबूत होण्यास मदत होते. यातील बहुतेक उपक्रम मोफत आहेत. तथापि, आम्हाला प्रशासकीय खर्च आहेत आणि म्हणूनच आम्ही आपल्याला देणगीसाठी आवाहन करीत आहोत. आपल्या सद्गम मतीने आम्हाला हा खर्च भरून काढण्यास मदत होईल. तुमच्या सततच्या पाठिंब्याबद्दल आणि मतीबद्दल धन्यवाद."
+  },
+  "actionButtons": [
+    {
+      "id": 1,
+      "label": "BMM 2026 Seattle",
+      "href": "/events/2026-seattle",
+      "variant": "primary"
+    },
+    {
+      "id": 2,
+      "label": "BMM Donation",
+      "href": "/donate",
+      "variant": "secondary"
+    },
+    {
+      "id": 3,
+      "label": "Course Payment",
+      "href": "/payment",
+      "variant": "secondary"
+    },
+    {
+      "id": 4,
+      "label": "BMM 2026 Election",
+      "href": "/elections/2026",
+      "variant": "primary"
+    }
+  ],
+  "initiatives": [
+    {
+      "id": 1,
+      "nameMr": "मराठी शाळा",
+      "nameEn": "Marathi Language School",
+      "subtitle": "",
+      "href": "/initiatives/marathi-school"
+    },
+    {
+      "id": 2,
+      "nameMr": "रेशीमगाठी",
+      "nameEn": "Matrimonial",
+      "subtitle": "",
+      "href": "/initiatives/matrionial"
+    },
+    {
+      "id": 3,
+      "nameMr": "व्यवसाय",
+      "nameEn": "B-Connect",
+      "subtitle": "",
+      "href": "/initiatives/b-connect"
+    },
+    {
+      "id": 4,
+      "nameMr": "गुरुपीठ",
+      "nameEn": "Marathi Professors in North America",
+      "subtitle": "",
+      "href": "/initiatives/marathi-professors"
+    },
+    {
+      "id": 5,
+      "nameMr": "संवाद",
+      "nameEn": "Podcast",
+      "subtitle": "",
+      "href": "/initiatives/podcast"
+    },
+    {
+      "id": 6,
+      "nameMr": "आरोग्य संपदा",
+      "nameEn": "Health is Wealth",
+      "subtitle": "Free session every other Saturday 11AM ET",
+      "href": "/initiatives/health-wealth"
+    },
+    {
+      "id": 7,
+      "nameMr": "लक्ष्यवेधी",
+      "nameEn": "Trailblazers",
+      "subtitle": "",
+      "href": "/initiatives/trailblazers"
+    },
+    {
+      "id": 8,
+      "nameMr": "समाजरंग",
+      "nameEn": "Social Cause",
+      "subtitle": "",
+      "href": "/initiatives/social-cause"
+    },
+    {
+      "id": 9,
+      "nameMr": "अर्थमंथन",
+      "nameEn": "Money Talk",
+      "subtitle": "Free session on last Sunday",
+      "href": "/initiatives/money-talk"
+    },
+    {
+      "id": 10,
+      "nameMr": "उत्तररंग",
+      "nameEn": "Sr. Citizen Forum",
+      "subtitle": "Free session every other Saturday 3PM ET",
+      "href": "/initiatives/senior-citizen"
+    },
+    {
+      "id": 11,
+      "nameMr": "ध्यान",
+      "nameEn": "Meditation",
+      "subtitle": "Free session every Sunday 11AM ET",
+      "href": "/initiatives/meditation"
+    },
+    {
+      "id": 12,
+      "nameMr": "तत्वज्ञान",
+      "nameEn": "Philosophy",
+      "subtitle": "Every Monday 6:00 PM - 7:15 PM Pacific Time / 9pm PM - 10:15 PM Eastern Time",
+      "href": "/initiatives/philosophy"
+    },
+    {
+      "id": 13,
+      "nameMr": "पौरोहित्य",
+      "nameEn": "Hindu Priest",
+      "subtitle": "Paid sessions every week",
+      "href": "/initiatives/hindu-priest"
+    },
+    {
+      "id": 14,
+      "nameMr": "ज्योतिष शास्त्र",
+      "nameEn": "Astrology",
+      "subtitle": "Paid sessions every week",
+      "href": "/initiatives/astrology"
+    },
+    {
+      "id": 15,
+      "nameMr": "शास्त्रीय/सुगम संगीत",
+      "nameEn": "Music",
+      "subtitle": "Paid sessions every week",
+      "href": "/initiatives/music"
+    },
+    {
+      "id": 16,
+      "nameMr": "कीर्तन",
+      "nameEn": "Devotional Lecture",
+      "subtitle": "Paid sessions every week",
+      "href": "/initiatives/devotional-lecture"
+    },
+    {
+      "id": 17,
+      "nameMr": "भाषा",
+      "nameEn": "Languages",
+      "subtitle": "Paid sessions every week",
+      "href": "/initiatives/languages"
+    },
+    {
+      "id": 18,
+      "nameMr": "Karaoke",
+      "nameEn": "Karaoke",
+      "subtitle": "Free session every month 2nd & 4th sunday at 5pm ET",
+      "href": "/initiatives/karaoke"
+    },
+    {
+      "id": 19,
+      "nameMr": "वारसा",
+      "nameEn": "Heritage",
+      "subtitle": "",
+      "href": "/initiatives/heritage"
+    },
+    {
+      "id": 20,
+      "nameMr": "युवा",
+      "nameEn": "Youth Wing",
+      "subtitle": "",
+      "href": "/initiatives/youth-wing"
+    },
+    {
+      "id": 21,
+      "nameMr": "अंतरंग",
+      "nameEn": "Antarang",
+      "subtitle": "",
+      "href": "/initiatives/antarang"
+    },
+    {
+      "id": 22,
+      "nameMr": "चित्रकला",
+      "nameEn": "Artist Club",
+      "subtitle": "",
+      "href": "/initiatives/artist-club"
+    },
+    {
+      "id": 23,
+      "nameMr": "स्थानिक कार्यक्रम",
+      "nameEn": "North America Programming",
+      "subtitle": "",
+      "href": "/initiatives/na-programming"
+    },
+    {
+      "id": 24,
+      "nameMr": "भारतीय कार्यक्रम",
+      "nameEn": "India Programming",
+      "subtitle": "",
+      "href": "/initiatives/india-programming"
+    },
+    {
+      "id": 25,
+      "nameMr": "उन्हाळी कार्यक्रम",
+      "nameEn": "Summer Programs",
+      "subtitle": "",
+      "href": "/initiatives/summer-programs"
+    },
+    {
+      "id": 26,
+      "nameMr": "BMM मैत्री मेळावे",
+      "nameEn": "BMM Friend Gatherings 2025",
+      "subtitle": "",
+      "href": "/initiatives/friend-gatherings"
+    },
+    {
+      "id": 27,
+      "nameMr": "क्रीडा",
+      "nameEn": "Sports",
+      "subtitle": "",
+      "href": "/initiatives/sports"
+    },
+    {
+      "id": 28,
+      "nameMr": "आधार",
+      "nameEn": "BMM Helpline",
+      "subtitle": "",
+      "href": "/initiatives/helpline"
+    }
+  ],
+  "bottomButtons": [
+    {
+      "id": 1,
+      "label": "BMM Donation",
+      "href": "/donate",
+      "variant": "secondary"
+    },
+    {
+      "id": 2,
+      "label": "Course Payment",
+      "href": "/payment",
+      "variant": "secondary"
+    }
+  ],
+  "volunteerAward": {
+    "title": "How to apply for the US President's Volunteer Service Award",
+    "buttonLabel": "Click Here",
+    "href": "/volunteer-award"
+  }
+}

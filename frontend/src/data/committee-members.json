@@ -1,0 +1,116 @@
+{
+  "sections": [
+    {
+      "id": "main-committee",
+      "titleMarathi": "बृहन्महाराष्ट्र मंडळ समिती २२४ - २६",
+      "title": "BMM Committee 2024 - 26",
+      "centered": true,
+      "members": [
+        {
+          "id": 1,
+          "name": "Prasad Panvelkar",
+          "nameMarathi": "श्री. प्रसाद पानवळकर",
+          "position": "BMM President",
+          "positionMarathi": "बीएमएम अध्यक्ष",
+          "image": "/images/committee/president.png"
+        },
+        {
+          "id": 2,
+          "name": "Narendra Kalyanakar",
+          "nameMarathi": "श्री. नरेंद्र कल्याणकर",
+          "position": "BMM Secretary",
+          "positionMarathi": "बीएमएम सचिव",
+          "image": "/images/committee/secretary.png"
+        },
+        {
+          "id": 3,
+          "name": "Santosh Salvi",
+          "nameMarathi": "श्री. संतोष साळवी",
+          "position": "BMM Treasurer",
+          "positionMarathi": "बीएमएम खजिनदार",
+          "image": "/images/committee/treasurer.png"
+        }
+      ]
+    },
+    {
+      "id": "executive-committee",
+      "titleMarathi": "कार्यकारी समिती सदस्य",
+      "title": "Executive Committee Members",
+      "centered": true,
+      "members": [
+        {
+          "id": 4,
+          "name": "Anand Choudhari",
+          "nameMarathi": "श्री. आनंद चौधारी",
+          "position": "Executive Member",
+          "positionMarathi": "",
+          "image": "/images/committee/member1.png"
+        },
+        {
+          "id": 5,
+          "name": "Rahul Deshmukh",
+          "nameMarathi": "श्री. राहुल देशमुख",
+          "position": "Executive Member",
+          "positionMarathi": "",
+          "image": "/images/committee/member2.png"
+        },
+        {
+          "id": 6,
+          "name": "Medha Godbole",
+          "nameMarathi": "श्रीमती. मेधा गोडबोले",
+          "position": "Executive Member",
+          "positionMarathi": "",
+          "image": "/images/committee/member3.png"
+        },
+        {
+          "id": 7,
+          "name": "Gaurav Patwardhan",
+          "nameMarathi": "श्री. गौरव पटवर्धन",
+          "position": "Executive Member",
+          "positionMarathi": "",
+          "image": "/images/committee/member4.png"
+        },
+        {
+          "id": 8,
+          "name": "Puru Thakare",
+          "nameMarathi": "श्री. पुरु ठाकरे",
+          "position": "Executive Member",
+          "positionMarathi": "",
+          "image": "/images/committee/member5.png"
+        }
+      ]
+    },
+    {
+      "id": "board-of-trustees",
+      "titleMarathi": "बृहन्महाराष्ट्र मंडळ विश्वस्त",
+      "title": "Board of Trustees",
+      "centered": true,
+      "members": [
+        {
+          "id": 9,
+          "name": "Sunil Suryavanshi",
+          "nameMarathi": "श्री. सुनील सूर्यवंशी",
+          "position": "Trustee",
+          "positionMarathi": "",
+          "image": "/images/committee/trustee1.png"
+        },
+        {
+          "id": 10,
+          "name": "Manjusha Naik",
+          "nameMarathi": "सौ. मंजुषा नाईक",
+          "position": "Trustee",
+          "positionMarathi": "",
+          "image": "/images/committee/trustee2.png"
+        },
+        {
+          "id": 11,
+          "name": "Nitin Joshi",
+          "nameMarathi": "श्री. नितीन जोशी",
+          "position": "Trustee",
+          "positionMarathi": "",
+          "image": "/images/committee/trustee3.png"
+        }
+      ]
+    }
+  ]
+}

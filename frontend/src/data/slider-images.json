@@ -1,0 +1,106 @@
+{
+  "slides": [
+    {
+      "id": 1,
+      "src": "/images/slider/slider1.png",
+      "alt": "BMM Event 1"
+    },
+    {
+      "id": 2,
+      "src": "/images/slider/slider2.png",
+      "alt": "BMM Event 2"
+    },
+    {
+      "id": 3,
+      "src": "/images/slider/slider3.png",
+      "alt": "BMM Event 3"
+    },
+    {
+      "id": 4,
+      "src": "/images/slider/slider4.png",
+      "alt": "BMM Event 4"
+    },
+    {
+      "id": 5,
+      "src": "/images/slider/slider5.png",
+      "alt": "BMM Event 5"
+    },
+    {
+      "id": 6,
+      "src": "/images/slider/slider6.png",
+      "alt": "BMM Event 6"
+    },
+    {
+      "id": 7,
+      "src": "/images/slider/slider7.png",
+      "alt": "BMM Event 7"
+    },
+    {
+      "id": 8,
+      "src": "/images/slider/slider8.png",
+      "alt": "BMM Event 8"
+    },
+    {
+      "id": 9,
+      "src": "/images/slider/slider9.png",
+      "alt": "BMM Event 9"
+    },
+    {
+      "id": 10,
+      "src": "/images/slider/slider10.png",
+      "alt": "BMM Event 10"
+    },
+    {
+      "id": 11,
+      "src": "/images/slider/slider11.png",
+      "alt": "BMM Event 11"
+    },
+    {
+      "id": 12,
+      "src": "/images/slider/slider12.png",
+      "alt": "BMM Event 12"
+    },
+    {
+      "id": 13,
+      "src": "/images/slider/slider13.png",
+      "alt": "BMM Event 13"
+    },
+    {
+      "id": 14,
+      "src": "/images/slider/slider14.png",
+      "alt": "BMM Event 14"
+    },
+    {
+      "id": 15,
+      "src": "/images/slider/slider15.png",
+      "alt": "BMM Event 15"
+    },
+    {
+      "id": 16,
+      "src": "/images/slider/slider16.png",
+      "alt": "BMM Event 16"
+    },
+    {
+      "id": 17,
+      "src": "/images/slider/slider17.png",
+      "alt": "BMM Event 17"
+    },
+    {
+      "id": 18,
+      "src": "/images/slider/slider18.png",
+      "alt": "BMM Event 18"
+    },
+    {
+      "id": 19,
+      "src": "/images/slider/slider19.png",
+      "alt": "BMM Event 19"
+    }
+  ],
+  "settings": {
+    "autoSlideDelay": 5000,
+    "pauseDuration": 10000,
+    "showDots": true,
+    "showArrows": true,
+    "showCounter": true
+  }
+}

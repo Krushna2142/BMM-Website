@@ -1,11 +1,11 @@
 export const NAVIGATION_ITEMS = [
-  { label: "Home", href: "/" },
-  { label: "BMM Initiatives", href: "/initiatives" },
-  { label: "BMM Members", href: "/members" },
-  { label: "BMM Vrutta", href: "/vrutta" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Committee", href: "/committee" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/initiatives", label: "BMM Initiatives" },  // Changed from /bmm-initiatives
+  { href: "/bmm-members", label: "BMM Members" },
+  { href: "/bmm-vrutta", label: "BMM Vrutta" },
+  { href: "/committee", label: "Committee" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export const QUICK_LINKS = [

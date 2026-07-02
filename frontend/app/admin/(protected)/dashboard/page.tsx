@@ -3,6 +3,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -17,12 +20,22 @@ export default function DashboardPage() {
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
-      const res = await fetch('http://localhost:5000/pages', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setStats({ ...stats, totalPages: data.length });
+      const token = Cookies.get('bmm_admin_token');
+      const headers = { Authorization: `Bearer ${token}` };
+      
+      // Fetch pages count
+      const pagesRes = await fetch(`${API_BASE_URL}/api/pages`, { headers });
+      if (pagesRes.ok) {
+        const pagesData = await pagesRes.json();
+        setStats(prev => ({ ...prev, totalPages: pagesData.length }));
+      }
+
+      // Fetch media count
+      const mediaRes = await fetch(`${API_BASE_URL}/api/media/stats`, { headers });
+      if (mediaRes.ok) {
+        const mediaData = await mediaRes.json();
+        setStats(prev => ({ ...prev, totalMedia: mediaData.totalFiles || 0 }));
+      }
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }

@@ -1,9 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import sharp from 'sharp'; // 👈 Use default import, not namespace import
+import sharp from 'sharp';
 import * as mime from 'mime-types';
-import { existsSync, mkdirSync } from 'fs';
-
+import { existsSync, mkdirSync, writeFileSync, unlinkSync } from 'fs';
+import { join } from 'path';
 
 @Injectable()
 export class MediaService {
@@ -40,57 +40,38 @@ export class MediaService {
       throw new BadRequestException('Only image files (JPEG, PNG, GIF, WebP) are allowed');
     }
 
-    // Compress image if needed
-    let finalBuffer = file.buffer;
+    // Generate unique filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = '.jpg'; // We'll convert everything to JPEG
+    const filename = `${uniqueSuffix}${ext}`;
+    const filepath = join(this.uploadDir, filename);
+
+    // Compress and save image
     let finalSize = file.size;
+    let width: number | undefined;
+    let height: number | undefined;
 
-    if (file.mimetype.startsWith('image/')) {
-      try {
-        finalBuffer = await this.compressImage(file.buffer);
-        finalSize = finalBuffer.length;
-      } catch (error) {
-        console.error('Image compression failed, using original:', error);
-        // Continue with original file if compression fails
-      }
-    }
-
-    // Get MIME type
-    const mimeType = mime.lookup(file.originalname) || file.mimetype;
-
-    // Save to database
-    const media = await this.prisma.media.create({
-      data: {
-        filename: file.originalname,
-        url: `/uploads/${file.filename}`,
-        mimeType: mimeType,
-        size: finalSize,
-        sectionId: sectionId || null,
-      },
-    });
-
-    return media;
-  }
-
-  private async compressImage(buffer: Buffer): Promise<Buffer> {
     try {
-      const metadata = await sharp(buffer).metadata();
-      
-      // Calculate new dimensions while maintaining aspect ratio
-      let width = metadata.width || this.imageMaxWidth;
-      let height = metadata.height || this.imageMaxHeight;
+      const metadata = await sharp(file.buffer).metadata();
+      width = metadata.width;
+      height = metadata.height;
 
-      if (width > this.imageMaxWidth || height > this.imageMaxHeight) {
+      // Calculate new dimensions while maintaining aspect ratio
+      let newWidth = width || this.imageMaxWidth;
+      let newHeight = height || this.imageMaxHeight;
+
+      if (newWidth > this.imageMaxWidth || newHeight > this.imageMaxHeight) {
         const ratio = Math.min(
-          this.imageMaxWidth / width,
-          this.imageMaxHeight / height
+          this.imageMaxWidth / newWidth,
+          this.imageMaxHeight / newHeight
         );
-        width = Math.floor(width * ratio);
-        height = Math.floor(height * ratio);
+        newWidth = Math.floor(newWidth * ratio);
+        newHeight = Math.floor(newHeight * ratio);
       }
 
       // Compress and resize
-      return await sharp(buffer)
-        .resize(width, height, {
+      const compressedBuffer = await sharp(file.buffer)
+        .resize(newWidth, newHeight, {
           fit: 'inside',
           withoutEnlargement: true,
         })
@@ -100,10 +81,37 @@ export class MediaService {
           mozjpeg: true 
         })
         .toBuffer();
+
+      // ✅ Actually save the file to disk!
+      writeFileSync(filepath, compressedBuffer);
+      finalSize = compressedBuffer.length;
+      width = newWidth;
+      height = newHeight;
     } catch (error) {
-      console.error('Image compression error:', error);
-      return buffer; // Return original if compression fails
+      console.error('Image processing failed, saving original:', error);
+      // Save original file if processing fails
+      writeFileSync(filepath, file.buffer);
     }
+
+    // Get MIME type
+    const mimeType = mime.lookup(filename) || 'image/jpeg';
+
+    // Save to database
+    const media = await this.prisma.media.create({
+      data: {
+        filename: file.originalname,
+        url: `/uploads/${filename}`,
+        mimeType: mimeType,
+        size: finalSize,
+        sectionId: sectionId || null,
+      },
+    });
+
+    return {
+      ...media,
+      width,
+      height,
+    };
   }
 
   async findAll() {
@@ -128,8 +136,17 @@ export class MediaService {
   }
 
   async remove(id: string) {
-    // First check if media exists
-    await this.findOne(id);
+    const media = await this.findOne(id);
+
+    // ✅ Delete file from disk
+    const filepath = join(process.cwd(), media.url);
+    if (existsSync(filepath)) {
+      try {
+        unlinkSync(filepath);
+      } catch (error) {
+        console.error('Failed to delete file from disk:', error);
+      }
+    }
 
     // Delete from database
     return this.prisma.media.delete({

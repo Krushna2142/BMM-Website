@@ -3,7 +3,7 @@ import { AuditService } from './audit.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { Role, AuditAction } from '../generated/prisma/client';
+import { Role, AuditAction } from '../generated/prisma/enums';
 
 @Controller('audit-logs')
 @UseGuards(JwtAuthGuard, RolesGuard)

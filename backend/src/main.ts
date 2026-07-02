@@ -16,9 +16,9 @@ async function bootstrap() {
     crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow images to load on frontend
     contentSecurityPolicy: {
       directives: {
-        imgSrc: ['self', 'data:', 'blob:'],
-        scriptSrc: ['self'],
-        styleSrc: ['self', 'unsafe-inline'],
+        imgSrc: ["'self'", 'data:', 'blob:'],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
       },
     },
   }));

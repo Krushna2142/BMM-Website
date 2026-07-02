@@ -24,6 +24,21 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Handle 401 errors globally
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      Cookies.remove('bmm_admin_token');
+      Cookies.remove('bmm_admin_user');
+      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+        window.location.href = '/admin/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 interface Page {
   id: string;
   slug: string;

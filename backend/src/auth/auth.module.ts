@@ -12,8 +12,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'super_secret_key_change_me',
       signOptions: { 
-        // Accept string like "1d", "2h" or number of seconds directly
-        expiresIn: (process.env.JWT_EXPIRES_IN || '1d') as string | number,
+        // Use number of seconds directly to avoid type issues
+        // 86400 = 24 hours (1 day)
+        expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '86400', 10),
       },
     }),
   ],

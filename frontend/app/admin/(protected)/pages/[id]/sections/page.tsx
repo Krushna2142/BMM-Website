@@ -199,6 +199,7 @@ function SectionEditorModal({
     props: section?.props || {},
   });
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const getDefaultProps = (type: string) => {
     const defaults: any = {
@@ -291,7 +292,8 @@ function SectionEditorModal({
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg"
+            disabled={uploading}
+            className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50"
           >
             <X size={24} />
           </button>
@@ -315,11 +317,12 @@ function SectionEditorModal({
                         key={type.value}
                         type="button"
                         onClick={() => handleTypeChange(type.value)}
+                        disabled={uploading}
                         className={`flex items-start gap-3 p-4 rounded-xl border-2 text-left transition-all ${
                           isSelected 
                             ? 'border-blue-500 bg-blue-50 shadow-md' 
                             : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
-                        }`}
+                        } ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <div className={`p-2 rounded-lg ${isSelected ? 'bg-blue-500' : 'bg-gray-100'}`}>
                           <Icon size={20} className={isSelected ? 'text-white' : 'text-gray-600'} />
@@ -347,7 +350,8 @@ function SectionEditorModal({
                 value={formData.label}
                 onChange={(e) => setFormData({ ...formData, label: e.target.value })}
                 placeholder="e.g., Main Hero Banner"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                disabled={uploading}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
               />
               <p className="text-xs text-gray-500 mt-1">
                 This label is only visible in the admin panel to help identify sections
@@ -363,9 +367,10 @@ function SectionEditorModal({
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, isVisible: !formData.isVisible })}
+                disabled={uploading}
                 className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors ${
                   formData.isVisible ? 'bg-blue-600' : 'bg-gray-300'
-                }`}
+                } ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <span
                   className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-md ${
@@ -384,6 +389,7 @@ function SectionEditorModal({
                 sectionType={formData.type}
                 props={formData.props}
                 onChange={(props) => setFormData({ ...formData, props })}
+                onUploadingChange={setUploading}
               />
             </div>
           </div>
@@ -391,16 +397,22 @@ function SectionEditorModal({
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
+          {uploading && (
+            <div className="flex items-center gap-2 text-blue-600 mr-auto">
+              <Loader2 size={18} className="animate-spin" />
+              <span className="text-sm font-medium">Uploading image...</span>
+            </div>
+          )}
           <button
             onClick={onClose}
-            disabled={saving}
-            className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
+            disabled={saving || uploading}
+            className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-medium disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || uploading}
             className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center gap-2 disabled:opacity-50"
           >
             {saving ? (
@@ -523,6 +535,18 @@ function SectionsPageContent() {
       const res = await fetch(`${API_BASE_URL}/api/pages/${id}`, {
         headers: getAuthHeaders(),
       });
+      
+      if (!res.ok) {
+        if (res.status === 401) {
+          // Token might be expired, redirect to login
+          Cookies.remove('bmm_admin_token');
+          Cookies.remove('bmm_admin_user');
+          window.location.href = '/admin/login';
+          return;
+        }
+        throw new Error('Failed to fetch page');
+      }
+      
       const data = await res.json();
       setPageInfo(data);
       setSections(data.sections || []);
@@ -592,7 +616,15 @@ function SectionsPageContent() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error('Save failed');
+      if (!res.ok) {
+        if (res.status === 401) {
+          Cookies.remove('bmm_admin_token');
+          Cookies.remove('bmm_admin_user');
+          window.location.href = '/admin/login';
+          return;
+        }
+        throw new Error('Save failed');
+      }
 
       setShowEditor(false);
       setEditingSection(null);

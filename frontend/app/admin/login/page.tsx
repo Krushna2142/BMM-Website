@@ -19,11 +19,18 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + '/api/auth/login', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
+      // Check if response is JSON
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Backend server is not responding. Please ensure the backend is running on port 5000.');
+      }
 
       const data = await res.json();
 
@@ -38,7 +45,8 @@ export default function AdminLoginPage() {
 
       router.push('/admin/dashboard');
     } catch (err: any) {
-      setError(err.message);
+      console.error('Login error:', err);
+      setError(err.message || 'Failed to connect to backend. Is the server running?');
     } finally {
       setIsLoading(false);
     }
@@ -66,8 +74,9 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="admin@bmm.org"
+              placeholder="admin@bmm.com"
             />
           </div>
 
@@ -79,6 +88,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
                 placeholder="••••••••"
               />
@@ -113,6 +123,11 @@ export default function AdminLoginPage() {
             {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        <div className="mt-6 text-center text-xs text-gray-500">
+          <p>Default credentials:</p>
+          <p className="font-mono">admin@bmm.com / admin123</p>
+        </div>
       </div>
     </div>
   );

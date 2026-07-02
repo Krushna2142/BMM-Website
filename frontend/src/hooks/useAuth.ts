@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { apiService } from "@/src/services/api";
+import Cookies from "js-cookie";
 import { User, AuthResponse, LoginForm } from "@/src/types";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -9,44 +11,57 @@ export function useAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("bmm_token");
-    if (token) {
-      // Validate token on mount
-      validateToken();
-    } else {
-      setLoading(false);
+    // ✅ Use cookies to match login page
+    const token = Cookies.get("bmm_admin_token");
+    const userData = Cookies.get("bmm_admin_user");
+    
+    if (token && userData) {
+      try {
+        setUser(JSON.parse(userData));
+      } catch (e) {
+        console.error("Failed to parse user data:", e);
+      }
     }
+    setLoading(false);
   }, []);
-
-  const validateToken = async () => {
-    try {
-      // Implement token validation endpoint call
-      setLoading(false);
-    } catch (error) {
-      localStorage.removeItem("bmm_token");
-      setLoading(false);
-    }
-  };
 
   const login = useCallback(async (credentials: LoginForm) => {
     try {
-      const response = await apiService.post<AuthResponse>("/auth/login", credentials);
-      if (response.success && response.data) {
-        apiService.setToken(response.data.access_token);
-        setUser(response.data.user);
-        router.push("/admin/dashboard");
-        return { success: true };
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        return { success: false, error: error.message || "Login failed" };
       }
-      return { success: false, error: "Login failed" };
-    } catch (error) {
-      return { success: false, error: "Invalid credentials" };
+
+      const data: AuthResponse = await res.json();
+
+      // ✅ Store in cookies (matches login page & middleware)
+      Cookies.set("bmm_admin_token", data.access_token, {
+        expires: 1,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+      Cookies.set("bmm_admin_user", JSON.stringify(data.user), { expires: 1 });
+
+      setUser(data.user);
+      router.push("/admin/dashboard");
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message || "Invalid credentials" };
     }
   }, [router]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("bmm_token");
+    // ✅ Remove from cookies
+    Cookies.remove("bmm_admin_token");
+    Cookies.remove("bmm_admin_user");
     setUser(null);
-    router.push("/");
+    router.push("/admin/login");
   }, [router]);
 
   return {

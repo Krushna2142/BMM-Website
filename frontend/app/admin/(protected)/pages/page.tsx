@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
 
 interface Page {
   id: string;
@@ -27,14 +30,18 @@ export default function PagesPage() {
     fetchPages();
   }, []);
 
+  const getAuthHeaders = () => {
+    const token = Cookies.get('bmm_admin_token');
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
+
   const fetchPages = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
-      const res = await fetch('http://localhost:5000/pages', {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
+      const res = await fetch(`${API_BASE_URL}/api/pages`, {
+        headers: getAuthHeaders(),
       });
       if (res.ok) {
         const data = await res.json();
@@ -55,13 +62,9 @@ export default function PagesPage() {
 
     setIsSubmitting(true);
     try {
-      const token = localStorage.getItem('admin_token');
-      const res = await fetch('http://localhost:5000/pages', {
+      const res = await fetch(`${API_BASE_URL}/api/pages`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(formData),
       });
 
@@ -84,12 +87,9 @@ export default function PagesPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this page?')) return;
     try {
-      const token = localStorage.getItem('admin_token');
-      const res = await fetch(`http://localhost:5000/pages/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/pages/${id}`, {
         method: 'DELETE',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(),
       });
       if (res.ok) {
         await fetchPages();

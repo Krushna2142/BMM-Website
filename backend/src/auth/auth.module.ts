@@ -13,7 +13,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       secret: process.env.JWT_SECRET || 'super_secret_key_change_me',
       signOptions: { 
         // Accept string like "1d", "2h" or number of seconds directly
-        expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+        expiresIn: (process.env.JWT_EXPIRES_IN || '1d') as string | number,
       },
     }),
   ],

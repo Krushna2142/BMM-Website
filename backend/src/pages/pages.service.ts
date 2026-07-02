@@ -3,7 +3,6 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class PagesService {
-  [x: string]: any;
   constructor(private prisma: PrismaService) {}
 
   async findAll() {
@@ -37,7 +36,7 @@ export class PagesService {
   }
 
   async findById(id: string) {
-    return this.prisma.page.findUnique({
+    const page = await this.prisma.page.findUnique({
       where: { id },
       include: {
         sections: {
@@ -46,6 +45,12 @@ export class PagesService {
         },
       },
     });
+
+    if (!page) {
+      throw new NotFoundException(`Page with id "${id}" not found`);
+    }
+
+    return page;
   }
 
   async create(data: { slug: string; title: string; status?: string }) {
@@ -82,13 +87,21 @@ export class PagesService {
   }
 
   async createSection(pageId: string, dto: any) {
+    // Get the max order for this page
+    const maxOrderSection = await this.prisma.section.findFirst({
+      where: { pageId },
+      orderBy: { order: 'desc' },
+    });
+
+    const nextOrder = maxOrderSection ? maxOrderSection.order + 1 : 1;
+
     return this.prisma.section.create({
       data: {
         pageId,
         type: dto.type,
-        order: dto.order,
+        order: dto.order ?? nextOrder,
         isVisible: dto.isVisible ?? true,
-        props: dto.props,
+        props: dto.props || {},
       },
       include: { media: true },
     });
@@ -106,5 +119,20 @@ export class PagesService {
     return this.prisma.section.delete({
       where: { id },
     });
+  }
+
+  async reorderSections(pageId: string, sectionIds: string[]) {
+    // Update each section's order based on its position in the array
+    const updates = sectionIds.map((sectionId, index) =>
+      this.prisma.section.update({
+        where: { id: sectionId },
+        data: { order: index + 1 },
+      })
+    );
+
+    await this.prisma.$transaction(updates);
+
+    // Return the updated page with sections
+    return this.findById(pageId);
   }
 }

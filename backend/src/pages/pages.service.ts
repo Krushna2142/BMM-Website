@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSectionDto, UpdateSectionDto } from './dto/section.dto';
 import { CreatePageDto, UpdatePageDto } from './dto/page.dto';
-import { PageStatus } from '../generated/prisma/client';
+import { PageStatus } from '../generated/prisma/enums';
 
 @Injectable()
 export class PagesService {

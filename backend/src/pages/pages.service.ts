@@ -99,6 +99,7 @@ export class PagesService {
       data: {
         pageId,
         type: dto.type,
+        label: dto.label || null,
         order: dto.order ?? nextOrder,
         isVisible: dto.isVisible ?? true,
         props: dto.props || {},
@@ -108,9 +109,17 @@ export class PagesService {
   }
 
   async updateSection(id: string, dto: any) {
+    const updateData: any = {};
+    
+    if (dto.type !== undefined) updateData.type = dto.type;
+    if (dto.label !== undefined) updateData.label = dto.label || null;
+    if (dto.order !== undefined) updateData.order = dto.order;
+    if (dto.isVisible !== undefined) updateData.isVisible = dto.isVisible;
+    if (dto.props !== undefined) updateData.props = dto.props;
+
     return this.prisma.section.update({
       where: { id },
-      data: dto,
+      data: updateData,
       include: { media: true },
     });
   }

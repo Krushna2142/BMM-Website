@@ -20,6 +20,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import SectionEditor from '@/components/admin/SectionEditor';
+import RBACGuard from '@/components/admin/RBACGuard';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
 
@@ -488,7 +489,7 @@ function DeleteConfirmModal({
 }
 
 // ============ MAIN PAGE COMPONENT ============
-export default function SectionsPage() {
+function SectionsPageContent() {
   const { id } = useParams();
   const router = useRouter();
   const [sections, setSections] = useState<Section[]>([]);
@@ -763,5 +764,14 @@ export default function SectionsPage() {
         />
       )}
     </div>
+  );
+}
+
+// ============ WRAPPED WITH RBAC GUARD ============
+export default function SectionsPage() {
+  return (
+    <RBACGuard allowedRoles={['SUPER_ADMIN', 'ADMIN', 'EDITOR']}>
+      <SectionsPageContent />
+    </RBACGuard>
   );
 }

@@ -11,7 +11,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'super_secret_key_change_me',
-      signOptions: { expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '86400', 10) },
+      signOptions: { 
+        // Accept string like "1d", "2h" or number of seconds directly
+        expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+      },
     }),
   ],
   providers: [AuthService, JwtStrategy],

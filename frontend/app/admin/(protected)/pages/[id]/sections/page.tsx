@@ -3,6 +3,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
 
 interface Section {
   id: string;
@@ -40,11 +43,18 @@ export default function SectionsPage() {
     fetchSections();
   }, [id]);
 
+  const getAuthHeaders = () => {
+    const token = Cookies.get('bmm_admin_token');
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
+
   const fetchSections = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
-      const res = await fetch(`http://localhost:5000/pages/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(`${API_BASE_URL}/api/pages/${id}`, {
+        headers: getAuthHeaders(),
       });
       const data = await res.json();
       setSections(data.sections || []);
@@ -57,7 +67,7 @@ export default function SectionsPage() {
 
   const handleCreate = () => {
     setEditingSection(null);
-    setFormData({ type: 'hero', order: sections.length, isVisible: true, props: getDefaultProps('hero') });
+    setFormData({ type: 'hero', order: sections.length + 1, isVisible: true, props: getDefaultProps('hero') });
     setShowModal(true);
   };
 
@@ -74,18 +84,14 @@ export default function SectionsPage() {
 
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
       const url = editingSection
-        ? `http://localhost:5000/pages/sections/${editingSection.id}`
-        : `http://localhost:5000/pages/${id}/sections`;
+        ? `${API_BASE_URL}/api/pages/sections/${editingSection.id}`
+        : `${API_BASE_URL}/api/pages/${id}/sections`;
       const method = editingSection ? 'PUT' : 'POST';
 
       await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(formData),
       });
 
@@ -99,14 +105,60 @@ export default function SectionsPage() {
   const handleDelete = async (sectionId: string) => {
     if (!confirm('Delete this section?')) return;
     try {
-      const token = localStorage.getItem('admin_token');
-      await fetch(`http://localhost:5000/pages/sections/${sectionId}`, {
+      await fetch(`${API_BASE_URL}/api/pages/sections/${sectionId}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getAuthHeaders(),
       });
       fetchSections();
     } catch (err) {
       console.error('Failed to delete section:', err);
+    }
+  };
+
+  const handleMoveUp = async (index: number) => {
+    if (index === 0) return;
+    const newSections = [...sections];
+    [newSections[index], newSections[index - 1]] = [newSections[index - 1], newSections[index]];
+    
+    try {
+      await fetch(`${API_BASE_URL}/api/pages/${id}/sections/reorder`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ sectionIds: newSections.map(s => s.id) }),
+      });
+      fetchSections();
+    } catch (err) {
+      console.error('Failed to reorder sections:', err);
+    }
+  };
+
+  const handleMoveDown = async (index: number) => {
+    if (index === sections.length - 1) return;
+    const newSections = [...sections];
+    [newSections[index], newSections[index + 1]] = [newSections[index + 1], newSections[index]];
+    
+    try {
+      await fetch(`${API_BASE_URL}/api/pages/${id}/sections/reorder`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ sectionIds: newSections.map(s => s.id) }),
+      });
+      fetchSections();
+    } catch (err) {
+      console.error('Failed to reorder sections:', err);
+    }
+  };
+
+  const handleToggleVisibility = async (section: Section) => {
+    try {
+      await fetch(`${API_BASE_URL}/api/pages/sections/${section.id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ isVisible: !section.isVisible }),
+      });
+      fetchSections();
+    } catch (err) {
+      console.error('Failed to toggle visibility:', err);
     }
   };
 
@@ -188,18 +240,48 @@ export default function SectionsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {sections.map((section) => (
+          {sections.map((section, index) => (
             <div key={section.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-bold text-lg">
-                    {SECTION_TYPES.find(t => t.value === section.type)?.label || section.type}
-                  </h3>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold text-lg">
+                      {SECTION_TYPES.find(t => t.value === section.type)?.label || section.type}
+                    </h3>
+                    <span className={`px-2 py-0.5 text-xs rounded-full ${
+                      section.isVisible ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      {section.isVisible ? 'Visible' : 'Hidden'}
+                    </span>
+                  </div>
                   <p className="text-sm text-gray-500">
-                    Order: {section.order} | {section.isVisible ? 'Visible' : 'Hidden'}
+                    Order: {section.order}
                   </p>
                 </div>
-                <div className="space-x-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleMoveUp(index)}
+                    disabled={index === 0}
+                    className="text-gray-600 hover:text-gray-900 disabled:opacity-30"
+                    title="Move Up"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    onClick={() => handleMoveDown(index)}
+                    disabled={index === sections.length - 1}
+                    className="text-gray-600 hover:text-gray-900 disabled:opacity-30"
+                    title="Move Down"
+                  >
+                    ↓
+                  </button>
+                  <button
+                    onClick={() => handleToggleVisibility(section)}
+                    className="text-yellow-600 hover:text-yellow-900"
+                    title={section.isVisible ? 'Hide' : 'Show'}
+                  >
+                    {section.isVisible ? '👁️' : '🚫'}
+                  </button>
                   <button
                     onClick={() => handleEdit(section)}
                     className="text-blue-600 hover:text-blue-900"

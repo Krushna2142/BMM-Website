@@ -3,8 +3,26 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Add auth token to every request
+api.interceptors.request.use((config) => {
+  const token = Cookies.get('bmm_admin_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 interface Page {
   id: string;
@@ -30,25 +48,15 @@ export default function PagesPage() {
     fetchPages();
   }, []);
 
-  const getAuthHeaders = () => {
-    const token = Cookies.get('bmm_admin_token');
-    return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
-  };
-
   const fetchPages = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/pages`, {
-        headers: getAuthHeaders(),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setPages(data);
-      }
+      const response = await api.get('/api/pages');
+      setPages(response.data);
     } catch (err) {
       console.error('Failed to fetch pages:', err);
+      if (axios.isAxiosError(err)) {
+        console.error('Axios error:', err.response?.data || err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -62,23 +70,17 @@ export default function PagesPage() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/pages`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        setShowModal(false);
-        setFormData({ slug: '', title: '', status: 'DRAFT' });
-        await fetchPages();
-      } else {
-        const error = await res.json();
-        alert(`Failed to create page: ${error.message}`);
-      }
+      await api.post('/api/pages', formData);
+      setShowModal(false);
+      setFormData({ slug: '', title: '', status: 'DRAFT' });
+      await fetchPages();
     } catch (err) {
       console.error('Failed to create page:', err);
-      alert('Failed to create page');
+      if (axios.isAxiosError(err)) {
+        alert(`Failed to create page: ${err.response?.data?.message || err.message}`);
+      } else {
+        alert('Failed to create page');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -87,13 +89,8 @@ export default function PagesPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this page?')) return;
     try {
-      const res = await fetch(`${API_BASE_URL}/api/pages/${id}`, {
-        method: 'DELETE',
-        headers: getAuthHeaders(),
-      });
-      if (res.ok) {
-        await fetchPages();
-      }
+      await api.delete(`/api/pages/${id}`);
+      await fetchPages();
     } catch (err) {
       console.error('Failed to delete page:', err);
     }

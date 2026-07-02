@@ -7,7 +7,7 @@ import {
   MaxLength,
   Matches,
 } from 'class-validator';
-import { PageStatus } from '../../generated/prisma/client';
+import { PageStatus } from '../../generated/prisma/enums';
 
 export class CreatePageDto {
   @IsString()

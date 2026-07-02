@@ -57,18 +57,18 @@ export class AuthService {
     try {
       await this.prisma.auditLog.create({
         data: {
-          userId,
-          userEmail,
+          userId: userId || null,
+          userEmail: userEmail || null,
           action: AuditAction.LOGIN,
           entityType: 'user',
-          entityId: userId,
-          ipAddress,
-          userAgent,
+          entityId: userId || null,
+          ipAddress: ipAddress || null,
+          userAgent: userAgent || null,
         },
       });
     } catch (error) {
       // Don't throw - audit logging should never break the main operation
-      console.error('Failed to create login audit log:', error);
+      console.error('Failed to create login audit log:', error.message);
     }
   }
 

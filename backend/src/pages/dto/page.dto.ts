@@ -3,7 +3,6 @@ import {
   IsOptional,
   IsArray,
   IsEnum,
-  IsInt,
   MinLength,
   MaxLength,
   Matches,

@@ -21,10 +21,26 @@ export default function DashboardPage() {
   const fetchStats = async () => {
     try {
       const token = Cookies.get('bmm_admin_token');
+      
+      if (!token) {
+        // No token, redirect to login
+        window.location.href = '/admin/login';
+        return;
+      }
+      
       const headers = { Authorization: `Bearer ${token}` };
       
       // Fetch pages count
       const pagesRes = await fetch(`${API_BASE_URL}/api/pages`, { headers });
+      
+      if (pagesRes.status === 401) {
+        // Token is invalid or expired
+        Cookies.remove('bmm_admin_token');
+        Cookies.remove('bmm_admin_user');
+        window.location.href = '/admin/login';
+        return;
+      }
+      
       if (pagesRes.ok) {
         const pagesData = await pagesRes.json();
         setStats(prev => ({ ...prev, totalPages: pagesData.length }));
@@ -32,6 +48,14 @@ export default function DashboardPage() {
 
       // Fetch media count
       const mediaRes = await fetch(`${API_BASE_URL}/api/media/stats`, { headers });
+      
+      if (mediaRes.status === 401) {
+        Cookies.remove('bmm_admin_token');
+        Cookies.remove('bmm_admin_user');
+        window.location.href = '/admin/login';
+        return;
+      }
+      
       if (mediaRes.ok) {
         const mediaData = await mediaRes.json();
         setStats(prev => ({ ...prev, totalMedia: mediaData.totalFiles || 0 }));

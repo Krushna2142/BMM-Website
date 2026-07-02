@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
 import { MediaController } from './media.controller';
 import { MediaService } from './media.service';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -10,20 +9,18 @@ import { PrismaModule } from '../prisma/prisma.module';
   imports: [
     PrismaModule,
     MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          const ext = extname(file.originalname);
-          callback(null, `${uniqueSuffix}${ext}`);
-        },
-      }),
+      // Use memoryStorage so file.buffer is available for sharp processing
+      // The service handles writing processed files to disk
+      storage: memoryStorage(),
       limits: {
-        fileSize: parseInt(process.env.MAX_FILE_SIZE || '5242880', 10), // 5MB default
+        fileSize: parseInt(process.env.MAX_FILE_SIZE || '10485760', 10), // 10MB default
+        files: 1, // Only allow single file upload per request
       },
       fileFilter: (req, file, callback) => {
-        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|webp)$/)) {
-          return callback(new Error('Only image files are allowed!'), false);
+        // Security: Validate MIME type strictly
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedMimeTypes.includes(file.mimetype)) {
+          return callback(new Error('Only image files (JPEG, PNG, GIF, WebP) are allowed!'), false);
         }
         callback(null, true);
       },

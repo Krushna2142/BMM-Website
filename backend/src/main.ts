@@ -1,16 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import helmet from 'helmet';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const logger = new Logger('Bootstrap');
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: ['error', 'warn', 'log'],
+  });
 
   // Security headers
   app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow images to load on frontend
+    contentSecurityPolicy: {
+      directives: {
+        imgSrc: ['self', 'data:', 'blob:'],
+        scriptSrc: ['self'],
+        styleSrc: ['self', 'unsafe-inline'],
+      },
+    },
   }));
 
   // CORS configuration
@@ -18,18 +28,22 @@ async function bootstrap() {
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
-  // Global validation pipe
+  // Global validation pipe - strips unknown properties, transforms types
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
+      whitelist: true,           // Strip properties not in DTO
+      forbidNonWhitelisted: true, // Reject requests with unknown properties
+      transform: true,           // Auto-transform payloads to DTO instances
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
 
-  // ✅ Serve uploaded files statically
+  // Serve uploaded files statically
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
     prefix: '/uploads/',
   });
@@ -39,8 +53,8 @@ async function bootstrap() {
 
   const port = process.env.PORT || 5000;
   await app.listen(port);
-  console.log(`🚀 BMM CMS Backend running on http://localhost:${port}`);
-  console.log(`📝 Environment: ${process.env.NODE_ENV}`);
-  console.log(`📁 Uploads served at: http://localhost:${port}/uploads/`);
+  logger.log(`BMM CMS Backend running on http://localhost:${port}`);
+  logger.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  logger.log(`Uploads served at: http://localhost:${port}/uploads/`);
 }
 bootstrap();

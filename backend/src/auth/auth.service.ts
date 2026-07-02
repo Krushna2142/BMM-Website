@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
+import { AuditAction } from '../generated/prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -14,22 +15,33 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     const user = await this.prisma.adminUser.findUnique({ where: { email } });
     if (!user) {
+      // Use generic message to prevent user enumeration
       throw new UnauthorizedException('Invalid credentials');
     }
-    
+
+    if (!user.isActive) {
+      throw new UnauthorizedException('Account is disabled');
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    
+
+    // Update last login timestamp
+    await this.prisma.adminUser.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
+
     return user;
   }
 
   async login(loginDto: LoginDto) {
     const user = await this.validateUser(loginDto.email, loginDto.password);
-    
+
     const payload = { sub: user.id, email: user.email, role: user.role };
-    
+
     return {
       access_token: await this.jwtService.signAsync(payload),
       user: {
@@ -39,6 +51,25 @@ export class AuthService {
         role: user.role,
       },
     };
+  }
+
+  async logLogin(userId: string, userEmail: string, ipAddress?: string, userAgent?: string) {
+    try {
+      await this.prisma.auditLog.create({
+        data: {
+          userId,
+          userEmail,
+          action: AuditAction.LOGIN,
+          entityType: 'user',
+          entityId: userId,
+          ipAddress,
+          userAgent,
+        },
+      });
+    } catch (error) {
+      // Don't throw - audit logging should never break the main operation
+      console.error('Failed to create login audit log:', error);
+    }
   }
 
   async hashPassword(password: string): Promise<string> {

@@ -11,7 +11,9 @@
 
 export const Role = {
   SUPER_ADMIN: 'SUPER_ADMIN',
-  EDITOR: 'EDITOR'
+  ADMIN: 'ADMIN',
+  EDITOR: 'EDITOR',
+  VIEWER: 'VIEWER'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
@@ -19,7 +21,23 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export const PageStatus = {
   DRAFT: 'DRAFT',
-  PUBLISHED: 'PUBLISHED'
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
 } as const
 
 export type PageStatus = (typeof PageStatus)[keyof typeof PageStatus]
+
+
+export const AuditAction = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE',
+  PUBLISH: 'PUBLISH',
+  UNPUBLISH: 'UNPUBLISH',
+  RESTORE: 'RESTORE',
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
+  UPLOAD: 'UPLOAD'
+} as const
+
+export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]

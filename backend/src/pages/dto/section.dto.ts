@@ -1,18 +1,48 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, IsObject } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsBoolean,
+  IsOptional,
+  IsObject,
+  IsISO8601,
+  Min,
+} from 'class-validator';
 
 export class CreateSectionDto {
   @IsString()
   type: string;
 
+  @IsString()
+  @IsOptional()
+  label?: string;
+
   @IsNumber()
-  order: number;
+  @IsOptional()
+  @Min(0)
+  order?: number;
 
   @IsBoolean()
   @IsOptional()
   isVisible?: boolean;
 
   @IsObject()
-  props: any;
+  props: Record<string, any>;
+
+  @IsObject()
+  @IsOptional()
+  mobileProps?: Record<string, any>;
+
+  @IsObject()
+  @IsOptional()
+  customStyles?: Record<string, any>;
+
+  @IsISO8601()
+  @IsOptional()
+  publishStartAt?: string;
+
+  @IsISO8601()
+  @IsOptional()
+  publishEndAt?: string;
 }
 
 export class UpdateSectionDto {
@@ -20,8 +50,13 @@ export class UpdateSectionDto {
   @IsOptional()
   type?: string;
 
+  @IsString()
+  @IsOptional()
+  label?: string;
+
   @IsNumber()
   @IsOptional()
+  @Min(0)
   order?: number;
 
   @IsBoolean()
@@ -30,5 +65,21 @@ export class UpdateSectionDto {
 
   @IsObject()
   @IsOptional()
-  props?: any;
+  props?: Record<string, any>;
+
+  @IsObject()
+  @IsOptional()
+  mobileProps?: Record<string, any>;
+
+  @IsObject()
+  @IsOptional()
+  customStyles?: Record<string, any>;
+
+  @IsISO8601()
+  @IsOptional()
+  publishStartAt?: string;
+
+  @IsISO8601()
+  @IsOptional()
+  publishEndAt?: string;
 }

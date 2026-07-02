@@ -12,6 +12,8 @@ import {
 } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreateSectionDto, UpdateSectionDto } from './dto/section.dto';
+import { CreatePageDto, UpdatePageDto } from './dto/page.dto';
+import { ReorderSectionsDto } from './dto/reorder-sections.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('pages')
@@ -40,14 +42,14 @@ export class PagesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() body: { slug: string; title: string; status?: string }) {
-    return this.pagesService.create(body);
+  async create(@Body() dto: CreatePageDto) {
+    return this.pagesService.create(dto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() body: { title?: string; status?: string }) {
-    return this.pagesService.update(id, body);
+  async update(@Param('id') id: string, @Body() dto: UpdatePageDto) {
+    return this.pagesService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -87,8 +89,8 @@ export class PagesController {
   @HttpCode(HttpStatus.OK)
   async reorderSections(
     @Param('pageId') pageId: string,
-    @Body() body: { sectionIds: string[] },
+    @Body() dto: ReorderSectionsDto,
   ) {
-    return this.pagesService.reorderSections(pageId, body.sectionIds);
+    return this.pagesService.reorderSections(pageId, dto.sectionIds);
   }
 }

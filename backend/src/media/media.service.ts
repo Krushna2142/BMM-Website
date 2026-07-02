@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import sharp from 'sharp';
 import * as mime from 'mime-types';
 import { existsSync, mkdirSync, writeFileSync, unlinkSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 @Injectable()
 export class MediaService {
@@ -15,7 +15,7 @@ export class MediaService {
 
   constructor(private prisma: PrismaService) {
     this.uploadDir = process.env.UPLOAD_DIR || './uploads';
-    this.maxFileSize = parseInt(process.env.MAX_FILE_SIZE || '5242880', 10); // 5MB default
+    this.maxFileSize = parseInt(process.env.MAX_FILE_SIZE || '10485760', 10); // 10MB default
     this.imageQuality = parseInt(process.env.IMAGE_QUALITY || '80', 10);
     this.imageMaxWidth = parseInt(process.env.IMAGE_MAX_WIDTH || '1920', 10);
     this.imageMaxHeight = parseInt(process.env.IMAGE_MAX_HEIGHT || '1080', 10);
@@ -34,13 +34,13 @@ export class MediaService {
       );
     }
 
-    // Validate file type
+    // Validate file type - check both mimetype and extension for security
     const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!allowedMimeTypes.includes(file.mimetype)) {
       throw new BadRequestException('Only image files (JPEG, PNG, GIF, WebP) are allowed');
     }
 
-    // Generate unique filename
+    // Generate unique filename with safe extension
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = '.jpg'; // We'll convert everything to JPEG
     const filename = `${uniqueSuffix}${ext}`;
@@ -82,7 +82,7 @@ export class MediaService {
         })
         .toBuffer();
 
-      // ✅ Actually save the file to disk!
+      // Save the processed file to disk
       writeFileSync(filepath, compressedBuffer);
       finalSize = compressedBuffer.length;
       width = newWidth;
@@ -96,13 +96,16 @@ export class MediaService {
     // Get MIME type
     const mimeType = mime.lookup(filename) || 'image/jpeg';
 
-    // Save to database
+    // Save to database - include ALL fields from schema
     const media = await this.prisma.media.create({
       data: {
         filename: file.originalname,
+        originalName: file.originalname,
         url: `/uploads/${filename}`,
         mimeType: mimeType,
         size: finalSize,
+        width: width || null,
+        height: height || null,
         sectionId: sectionId || null,
       },
     });
@@ -138,8 +141,16 @@ export class MediaService {
   async remove(id: string) {
     const media = await this.findOne(id);
 
-    // ✅ Delete file from disk
+    // Security: Prevent path traversal attacks
     const filepath = join(process.cwd(), media.url);
+    const normalizedPath = resolve(filepath);
+    const allowedDir = resolve(process.cwd(), this.uploadDir);
+
+    if (!normalizedPath.startsWith(allowedDir + '/') && normalizedPath !== allowedDir) {
+      throw new BadRequestException('Invalid file path detected');
+    }
+
+    // Delete file from disk
     if (existsSync(filepath)) {
       try {
         unlinkSync(filepath);

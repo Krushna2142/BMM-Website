@@ -9,7 +9,9 @@ datasource db {
 
 enum Role {
   SUPER_ADMIN
+  ADMIN
   EDITOR
+  VIEWER
 }
 
 enum PageStatus {
@@ -40,7 +42,8 @@ model Page {
 model Section {
   id        String   @id @default(uuid())
   pageId    String
-  type      String   // hero, stats, action_buttons, sponsors, image_slider, committee, executive_members, trustees
+  type      String   // hero, stats, action_buttons, sponsors, image_slider, committee, executive_members, trustees, content, about, cta, features
+  label     String?  // Admin-friendly label for identifying sections
   order     Int
   isVisible Boolean  @default(true)
   props     Json     // Flexible JSON for any section type

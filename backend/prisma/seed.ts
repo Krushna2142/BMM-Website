@@ -29,7 +29,7 @@ async function main() {
   console.log('✅ Created admin user');
 
   // Create Home Page
-  const homePage = await prisma.page.upsert({
+  await prisma.page.upsert({
     where: { slug: 'home' },
     update: {},
     create: {

@@ -36,14 +36,23 @@ export default function AdminLoginPage() {
 
       if (!res.ok) throw new Error(data.message || 'Login failed');
 
+      // Set cookies with more permissive settings for development
       Cookies.set('bmm_admin_token', data.access_token, {
         expires: 1,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict'
+        sameSite: 'lax',
+        path: '/'
       });
-      Cookies.set('bmm_admin_user', JSON.stringify(data.user), { expires: 1 });
+      Cookies.set('bmm_admin_user', JSON.stringify(data.user), { 
+        expires: 1,
+        sameSite: 'lax',
+        path: '/'
+      });
 
-      router.push('/admin/dashboard');
+      // Small delay to ensure cookies are set before redirect
+      setTimeout(() => {
+        router.push('/admin/dashboard');
+      }, 100);
     } catch (err: any) {
       console.error('Login error:', err);
       setError(err.message || 'Failed to connect to backend. Is the server running?');

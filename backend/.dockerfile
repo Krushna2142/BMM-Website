@@ -11,14 +11,15 @@ RUN npm install
 # Copy the rest of your code
 COPY . .
 
-# 1. Generate Prisma Client (Crucial for Docker!)
-RUN npx prisma generate
+# 1. Generate Prisma Client
+# FIX: Pass a dummy DATABASE_URL to satisfy Prisma's environment variable check
+RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npx prisma generate
 
 # 2. Build the NestJS application for production
 RUN npm run build
 
-# Expose the port (Render will override this with its own PORT env var)
-EXPOSE 5000
+# Expose the port
+EXPOSE 3000
 
-# 3. Run the PRODUCTION server (not start:dev)
+# 3. Run the PRODUCTION server
 CMD ["npm", "run", "start:prod"]

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # --- Database ---
+  db:
+    image: postgres:15-alpine
+    container_name: project_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres.rxhaafzebpqnagkfokrt
+      POSTGRES_PASSWORD: L2Aw2QPYXSNPKJxN
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # --- Backend API ---
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: project_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres.rxhaafzebpqnagkfokrt:L2Aw2QPYXSNPKJxN@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+      - NODE_ENV=development
+    depends_on:
+      - db
+    volumes:
+      # Mount local code for hot-reloading during development
+      - ./backend:/usr/src/app 
+      - /usr/src/app/node_modules
+
+  # --- Frontend UI ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development # Change to 'production' for prod builds
+    container_name: project_frontend
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  postgres_data:

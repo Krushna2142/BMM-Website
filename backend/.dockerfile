@@ -1,21 +1,24 @@
-# 1. UPGRADE TO NODE 22 HERE
 FROM node:22-alpine
 
-# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of your code
 COPY . .
 
-# Expose the port the app runs on (NestJS default is 3000)
-EXPOSE 3000
+# 1. Generate Prisma Client (Crucial for Docker!)
+RUN npx prisma generate
 
-# Command to run the app 
-# (Assuming you have a "start:dev" script in package.json for NestJS)
-CMD ["npm", "run", "start:dev"]
+# 2. Build the NestJS application for production
+RUN npm run build
+
+# Expose the port (Render will override this with its own PORT env var)
+EXPOSE 5000
+
+# 3. Run the PRODUCTION server (not start:dev)
+CMD ["npm", "run", "start:prod"]

@@ -52,7 +52,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const port = process.env.PORT || 5000;
-  await app.listen(port);
+  // IMPORTANT: Bind to '0.0.0.0' so Render's proxy can access your app
+  await app.listen(port, '0.0.0.0');
   logger.log(`BMM CMS Backend running on http://localhost:${port}`);
   logger.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   logger.log(`Uploads served at: http://localhost:${port}/uploads/`);

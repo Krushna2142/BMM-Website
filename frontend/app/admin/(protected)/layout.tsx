@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import { LayoutDashboard, FileText, Image, Users, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, Image, Users, Settings, LogOut, UserCircle } from 'lucide-react';
 
 const menuItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/pages', label: 'Pages', icon: FileText },
   { href: '/admin/media', label: 'Media Library', icon: Image },
+  { href: '/admin/members', label: 'Members', icon: UserCircle }, // ✅ ADDED MEMBERS
   { href: '/admin/users', label: 'Admin Users', icon: Users },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
@@ -19,6 +20,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = Cookies.get('bmm_admin_token');
@@ -29,6 +31,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     } else if (userData) {
       setUser(JSON.parse(userData));
     }
+    setLoading(false);
   }, [router]);
 
   const handleLogout = () => {
@@ -37,7 +40,13 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     router.push('/admin/login');
   };
 
-  if (!user) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -50,7 +59,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
         <nav className="flex-1 p-4 space-y-2">
           {menuItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
             return (
               <Link
                 key={item.href}
@@ -85,7 +94,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
       <main className="flex-1 overflow-y-auto">
         <header className="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center px-8">
           <h2 className="text-lg font-semibold text-gray-800">
-            {menuItems.find(m => m.href === pathname)?.label || 'Admin Panel'}
+            {menuItems.find(m => pathname.startsWith(m.href))?.label || 'Admin Panel'}
           </h2>
         </header>
         <div className="p-8">

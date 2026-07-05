@@ -10,6 +10,11 @@
  */
 export type * from './models/AdminUser'
 export type * from './models/Page'
+export type * from './models/PageVersion'
 export type * from './models/Section'
+export type * from './models/SectionVersion'
+export type * from './models/SectionTemplate'
 export type * from './models/Media'
+export type * from './models/Member'
+export type * from './models/AuditLog'
 export type * from './commonInputTypes'

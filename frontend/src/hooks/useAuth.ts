@@ -45,8 +45,12 @@ export function useAuth() {
         expires: 1,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
+        path: "/", // ✅ FIX: Makes the cookie accessible across the entire app
       });
-      Cookies.set("bmm_admin_user", JSON.stringify(data.user), { expires: 1 });
+      Cookies.set("bmm_admin_user", JSON.stringify(data.user), { 
+        expires: 1,
+        path: "/", // ✅ FIX: Makes the cookie accessible across the entire app
+      });
 
       setUser(data.user);
       router.push("/admin/dashboard");
@@ -58,8 +62,8 @@ export function useAuth() {
 
   const logout = useCallback(() => {
     // ✅ Remove from cookies
-    Cookies.remove("bmm_admin_token");
-    Cookies.remove("bmm_admin_user");
+    Cookies.remove("bmm_admin_token", { path: "/" }); // ✅ FIX: Must match the path it was set with
+    Cookies.remove("bmm_admin_user", { path: "/" }); // ✅ FIX: Must match the path it was set with
     setUser(null);
     router.push("/admin/login");
   }, [router]);

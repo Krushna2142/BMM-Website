@@ -1,9 +1,5 @@
-// frontend/app/(marketing)/layout.tsx
-// import Navbar from "@/components/marketing/Navbar";
-// import Footer from "@/components/marketing/Footer";
-
-import { Footer } from "@/src/components/layout/Footer";
 import { Navbar } from "@/src/components/layout/Navbar";
+import { Footer } from "@/src/components/layout/Footer";
 
 export default function MarketingLayout({
   children,
@@ -13,7 +9,7 @@ export default function MarketingLayout({
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main className="min-h-screen">{children}</main>
       <Footer />
     </>
   );

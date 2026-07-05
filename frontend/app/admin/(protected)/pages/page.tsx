@@ -1,241 +1,147 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  Plus,
+  FileText,
+  Edit2,
+  Eye,
+  Layers,
+} from "lucide-react";
+import api from "@/src/lib/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
-
-// Create axios instance with default config
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Add auth token to every request
-api.interceptors.request.use((config) => {
-  const token = Cookies.get('bmm_admin_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Handle 401 errors globally
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      Cookies.remove('bmm_admin_token');
-      Cookies.remove('bmm_admin_user');
-      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-        window.location.href = '/admin/login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+interface Section {
+  id: string;
+  type: string;
+  title: string;
+}
 
 interface Page {
   id: string;
-  slug: string;
   title: string;
-  status: string;
-  sections: any[];
+  slug: string;
+  isPublished: boolean;
+  sections?: Section[];
 }
 
 export default function PagesPage() {
-  const router = useRouter();
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ 
-    slug: '', 
-    title: '', 
-    status: 'DRAFT' 
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchPages();
+    loadPages();
   }, []);
 
-  const fetchPages = async () => {
+  const loadPages = async () => {
     try {
-      const response = await api.get('/api/pages');
+      const response = await api.get("/pages");
       setPages(response.data);
-    } catch (err) {
-      console.error('Failed to fetch pages:', err);
-      if (axios.isAxiosError(err)) {
-        console.error('Axios error:', err.response?.data || err.message);
-      }
+    } catch (error) {
+      console.error("Failed to load pages:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCreate = async () => {
-    if (!formData.title || !formData.slug) {
-      alert('Please fill in all required fields');
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await api.post('/api/pages', formData);
-      setShowModal(false);
-      setFormData({ slug: '', title: '', status: 'DRAFT' });
-      await fetchPages();
-    } catch (err) {
-      console.error('Failed to create page:', err);
-      if (axios.isAxiosError(err)) {
-        alert(`Failed to create page: ${err.response?.data?.message || err.message}`);
-      } else {
-        alert('Failed to create page');
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this page?')) return;
-    try {
-      await api.delete(`/api/pages/${id}`);
-      await fetchPages();
-    } catch (err) {
-      console.error('Failed to delete page:', err);
-    }
-  };
+    if (!confirm("Are you sure you want to delete this page?")) return;
 
-  const handleManageSections = (pageId: string) => {
-    router.push(`/admin/pages/${pageId}/sections`);
+    try {
+      await api.delete(`/pages/${id}`);
+      setPages(pages.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Failed to delete page:", error);
+      alert("Failed to delete page");
+    }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-500">Loading...</div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Pages</h1>
-        <button
-          onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Pages</h1>
+          <p className="text-sm text-gray-600 mt-0.5">Manage your website pages</p>
+        </div>
+        <Link
+          href="/admin/pages/new"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-600 text-white text-sm rounded hover:bg-orange-700 transition-colors"
         >
-          + New Page
-        </button>
+          <Plus className="w-4 h-4" />
+          New Page
+        </Link>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sections</th>
+              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {pages.map((page) => (
-              <tr key={page.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{page.title}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">/{page.slug}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    page.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {page.status}
+              <tr key={page.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <FileText className="w-4 h-4 text-gray-400 mr-2" />
+                    <div className="text-sm font-medium text-gray-900">{page.title}</div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">/{page.slug}</div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <span className={`px-2 py-0.5 inline-flex text-xs leading-4 font-semibold rounded-full ${page.isPublished ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                    {page.isPublished ? "Published" : "Draft"}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                  <button
-                    onClick={() => handleManageSections(page.id)}
-                    className="text-blue-600 hover:text-blue-900 font-medium"
-                  >
-                    Manage Sections
-                  </button>
-                  <button
-                    onClick={() => handleDelete(page.id)}
-                    className="text-red-600 hover:text-red-900 font-medium"
-                  >
-                    Delete
-                  </button>
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  {page.sections?.length || 0} sections
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                  <div className="flex items-center justify-end gap-2">
+                    <Link href={`/admin/pages/${page.id}/sections`} className="flex items-center gap-1 text-blue-600 hover:text-blue-900 text-xs font-medium">
+                      <Layers className="w-3.5 h-3.5" /> Manage Sections
+                    </Link>
+                    <Link href={`/admin/pages/${page.id}/edit`} className="flex items-center gap-1 text-green-600 hover:text-green-900 text-xs font-medium">
+                      <Edit2 className="w-3.5 h-3.5" /> Edit
+                    </Link>
+                    {page.isPublished && (
+                      <a href={`/${page.slug}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-purple-600 hover:text-purple-900 text-xs font-medium">
+                        <Eye className="w-3.5 h-3.5" /> View
+                      </a>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Create New Page</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter page title"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
-                <input
-                  type="text"
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="enter-slug-here"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select
-                  value={formData.status}
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="DRAFT">Draft</option>
-                  <option value="PUBLISHED">Published</option>
-                </select>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={handleCreate}
-                  disabled={isSubmitting}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Creating...' : 'Create'}
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
+        {pages.length === 0 && (
+          <div className="text-center py-8">
+            <FileText className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+            <h3 className="text-base font-medium text-gray-900 mb-1">No pages yet</h3>
+            <p className="text-sm text-gray-600 mb-3">Create your first page to get started</p>
+            <Link href="/admin/pages/new" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-600 text-white text-sm rounded hover:bg-orange-700 transition-colors">
+              <Plus className="w-4 h-4" /> Create Page
+            </Link>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

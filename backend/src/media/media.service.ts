@@ -1,52 +1,47 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import sharp from 'sharp';
-import * as mime from 'mime-types';
-import { existsSync, mkdirSync, writeFileSync, unlinkSync } from 'fs';
-import { join, resolve } from 'path';
+import { createClient } from '@supabase/supabase-js';
+
+const sharp = require('sharp');
 
 @Injectable()
 export class MediaService {
-  private readonly uploadDir: string;
-  private readonly maxFileSize: number;
-  private readonly imageQuality: number;
-  private readonly imageMaxWidth: number;
-  private readonly imageMaxHeight: number;
+  private readonly supabase;
+  private readonly bucketName = 'bmm-media';
+  private readonly maxFileSize = 10485760; // 10MB
 
   constructor(private prisma: PrismaService) {
-    this.uploadDir = process.env.UPLOAD_DIR || './uploads';
-    this.maxFileSize = parseInt(process.env.MAX_FILE_SIZE || '10485760', 10); // 10MB default
-    this.imageQuality = parseInt(process.env.IMAGE_QUALITY || '80', 10);
-    this.imageMaxWidth = parseInt(process.env.IMAGE_MAX_WIDTH || '1920', 10);
-    this.imageMaxHeight = parseInt(process.env.IMAGE_MAX_HEIGHT || '1080', 10);
-
-    // Ensure upload directory exists
-    if (!existsSync(this.uploadDir)) {
-      mkdirSync(this.uploadDir, { recursive: true });
-    }
+    this.supabase = createClient(
+      process.env.SUPABASE_URL || '',
+      process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+    );
   }
 
-  async uploadFile(file: Express.Multer.File, sectionId?: string) {
-    // Validate file size
+  async uploadFile(file: Express.Multer.File, folder?: string) {
     if (file.size > this.maxFileSize) {
-      throw new BadRequestException(
-        `File size exceeds maximum allowed size of ${this.maxFileSize / 1024 / 1024}MB`
-      );
+      throw new BadRequestException(`File size exceeds ${this.maxFileSize / 1024 / 1024}MB`);
     }
 
-    // Validate file type - check both mimetype and extension for security
     const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!allowedMimeTypes.includes(file.mimetype)) {
-      throw new BadRequestException('Only image files (JPEG, PNG, GIF, WebP) are allowed');
+      throw new BadRequestException('Only image files allowed');
     }
 
-    // Generate unique filename with safe extension
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = '.jpg'; // We'll convert everything to JPEG
-    const filename = `${uniqueSuffix}${ext}`;
-    const filepath = join(this.uploadDir, filename);
+    // Validate folder name
+    let safeFolder = '';
+    if (folder) {
+      if (!/^[a-zA-Z0-9\-_]+$/.test(folder)) {
+        throw new BadRequestException('Invalid folder name');
+      }
+      safeFolder = folder;
+    }
 
-    // Compress and save image
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const filename = `${uniqueSuffix}.jpg`;
+    const storagePath = safeFolder ? `${safeFolder}/${filename}` : filename;
+
+    // Process with Sharp
+    let finalBuffer: Buffer = file.buffer;
     let finalSize = file.size;
     let width: number | undefined;
     let height: number | undefined;
@@ -56,132 +51,141 @@ export class MediaService {
       width = metadata.width;
       height = metadata.height;
 
-      // Calculate new dimensions while maintaining aspect ratio
-      let newWidth = width || this.imageMaxWidth;
-      let newHeight = height || this.imageMaxHeight;
+      let newWidth = width || 1920;
+      let newHeight = height || 1080;
 
-      if (newWidth > this.imageMaxWidth || newHeight > this.imageMaxHeight) {
-        const ratio = Math.min(
-          this.imageMaxWidth / newWidth,
-          this.imageMaxHeight / newHeight
-        );
+      if (newWidth > 1920 || newHeight > 1080) {
+        const ratio = Math.min(1920 / newWidth, 1080 / newHeight);
         newWidth = Math.floor(newWidth * ratio);
         newHeight = Math.floor(newHeight * ratio);
       }
 
-      // Compress and resize
-      const compressedBuffer = await sharp(file.buffer)
-        .resize(newWidth, newHeight, {
-          fit: 'inside',
-          withoutEnlargement: true,
-        })
-        .jpeg({ 
-          quality: this.imageQuality, 
-          progressive: true,
-          mozjpeg: true 
-        })
+      finalBuffer = await sharp(file.buffer)
+        .resize(newWidth, newHeight, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 80, progressive: true, mozjpeg: true })
         .toBuffer();
 
-      // Save the processed file to disk
-      writeFileSync(filepath, compressedBuffer);
-      finalSize = compressedBuffer.length;
+      finalSize = finalBuffer.length;
       width = newWidth;
       height = newHeight;
     } catch (error) {
-      console.error('Image processing failed, saving original:', error);
-      // Save original file if processing fails
-      writeFileSync(filepath, file.buffer);
+      console.error('Sharp failed:', error);
     }
 
-    // Get MIME type
-    const mimeType = mime.lookup(filename) || 'image/jpeg';
+    // Upload to Supabase
+    const { error: uploadError } = await this.supabase.storage
+      .from(this.bucketName)
+      .upload(storagePath, finalBuffer, {
+        contentType: 'image/jpeg',
+        cacheControl: '3600',
+        upsert: false,
+      });
 
-    // Save to database - include ALL fields from schema
+    if (uploadError) {
+      throw new BadRequestException(`Upload failed: ${uploadError.message}`);
+    }
+
+    const { data: { publicUrl } } = this.supabase.storage
+      .from(this.bucketName)
+      .getPublicUrl(storagePath);
+
+    // Save to database
     const media = await this.prisma.media.create({
       data: {
         filename: file.originalname,
         originalName: file.originalname,
-        url: `/uploads/${filename}`,
-        mimeType: mimeType,
+        url: publicUrl,
+        mimeType: 'image/jpeg',
         size: finalSize,
         width: width || null,
         height: height || null,
-        sectionId: sectionId || null,
+        folder: safeFolder || undefined,
       },
     });
 
-    return {
-      ...media,
-      width,
-      height,
-    };
+    return media;
   }
 
-  async findAll() {
+  async getFolders() {
+    const mediaItems = await this.prisma.media.findMany({
+      select: { folder: true },
+      distinct: ['folder'],
+    });
+    return mediaItems.map(m => m.folder).filter(Boolean);
+  }
+
+  async findAll(folder?: string) {
+    const where = folder ? { folder: folder } : {};
     return this.prisma.media.findMany({
+      where,
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async findOne(id: string) {
-    const media = await this.prisma.media.findUnique({
-      where: { id },
-      include: {
-        section: true,
-      },
-    });
-
-    if (!media) {
-      throw new BadRequestException('Media file not found');
-    }
-
+    const media = await this.prisma.media.findUnique({ where: { id } });
+    if (!media) throw new BadRequestException('Not found');
     return media;
   }
 
   async remove(id: string) {
-    const media = await this.findOne(id);
+    const media = await this.prisma.media.findUnique({ where: { id } });
+    if (!media) throw new BadRequestException('Not found');
 
-    // Security: Prevent path traversal attacks
-    const filepath = join(process.cwd(), media.url);
-    const normalizedPath = resolve(filepath);
-    const allowedDir = resolve(process.cwd(), this.uploadDir);
+    const urlParts = media.url.split('/');
+    const filename = urlParts[urlParts.length - 1];
+    const folder = media.folder || '';
+    const storagePath = folder ? `${folder}/${filename}` : filename;
 
-    if (!normalizedPath.startsWith(allowedDir + '/') && normalizedPath !== allowedDir) {
-      throw new BadRequestException('Invalid file path detected');
+    await this.supabase.storage.from(this.bucketName).remove([storagePath]);
+    return this.prisma.media.delete({ where: { id } });
+  }
+
+  async renameFile(id: string, newName: string) {
+    if (newName.includes('..') || newName.includes('/') || newName.includes('\\')) {
+      throw new BadRequestException('Invalid name');
     }
-
-    // Delete file from disk
-    if (existsSync(filepath)) {
-      try {
-        unlinkSync(filepath);
-      } catch (error) {
-        console.error('Failed to delete file from disk:', error);
-      }
-    }
-
-    // Delete from database
-    return this.prisma.media.delete({
+    return this.prisma.media.update({
       where: { id },
+      data: { originalName: newName },
     });
+  }
+
+  async moveFiles(ids: string[], targetFolder: string) {
+    if (targetFolder && !/^[a-zA-Z0-9\-_]+$/.test(targetFolder)) {
+      throw new BadRequestException('Invalid folder');
+    }
+    return this.prisma.media.updateMany({
+      where: { id: { in: ids } },
+      data: { folder: targetFolder || undefined },
+    });
+  }
+
+  async copyFiles(ids: string[], targetFolder: string) {
+    if (targetFolder && !/^[a-zA-Z0-9\-_]+$/.test(targetFolder)) {
+      throw new BadRequestException('Invalid folder');
+    }
+    const files = await this.prisma.media.findMany({ where: { id: { in: ids } } });
+    const createData = files.map(f => ({
+      filename: f.filename,
+      originalName: f.originalName,
+      url: f.url,
+      mimeType: f.mimeType,
+      size: f.size,
+      width: f.width,
+      height: f.height,
+      folder: targetFolder || undefined,
+    }));
+    return this.prisma.media.createMany({ data: createData });
   }
 
   async getStats() {
     const totalFiles = await this.prisma.media.count();
-    const totalSize = await this.prisma.media.aggregate({
-      _sum: { size: true },
-    });
-
+    const totalSize = await this.prisma.media.aggregate({ _sum: { size: true } });
     return {
       totalFiles,
       totalSize: totalSize._sum.size || 0,
       averageSize: totalFiles > 0 ? (totalSize._sum.size || 0) / totalFiles : 0,
     };
-  }
-
-  async findBySection(sectionId: string) {
-    return this.prisma.media.findMany({
-      where: { sectionId },
-      orderBy: { createdAt: 'desc' },
-    });
   }
 }

@@ -28,82 +28,132 @@ export type AggregateSection = {
 
 export type SectionAvgAggregateOutputType = {
   order: number | null
+  versionNumber: number | null
 }
 
 export type SectionSumAggregateOutputType = {
   order: number | null
+  versionNumber: number | null
 }
 
 export type SectionMinAggregateOutputType = {
   id: string | null
   pageId: string | null
   type: string | null
+  label: string | null
   order: number | null
   isVisible: boolean | null
+  publishStartAt: Date | null
+  publishEndAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  createdBy: string | null
+  updatedBy: string | null
+  deletedAt: Date | null
+  versionNumber: number | null
 }
 
 export type SectionMaxAggregateOutputType = {
   id: string | null
   pageId: string | null
   type: string | null
+  label: string | null
   order: number | null
   isVisible: boolean | null
+  publishStartAt: Date | null
+  publishEndAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  createdBy: string | null
+  updatedBy: string | null
+  deletedAt: Date | null
+  versionNumber: number | null
 }
 
 export type SectionCountAggregateOutputType = {
   id: number
   pageId: number
   type: number
+  label: number
   order: number
   isVisible: number
   props: number
+  mobileProps: number
+  customStyles: number
+  publishStartAt: number
+  publishEndAt: number
   createdAt: number
   updatedAt: number
+  createdBy: number
+  updatedBy: number
+  deletedAt: number
+  versionNumber: number
   _all: number
 }
 
 
 export type SectionAvgAggregateInputType = {
   order?: true
+  versionNumber?: true
 }
 
 export type SectionSumAggregateInputType = {
   order?: true
+  versionNumber?: true
 }
 
 export type SectionMinAggregateInputType = {
   id?: true
   pageId?: true
   type?: true
+  label?: true
   order?: true
   isVisible?: true
+  publishStartAt?: true
+  publishEndAt?: true
   createdAt?: true
   updatedAt?: true
+  createdBy?: true
+  updatedBy?: true
+  deletedAt?: true
+  versionNumber?: true
 }
 
 export type SectionMaxAggregateInputType = {
   id?: true
   pageId?: true
   type?: true
+  label?: true
   order?: true
   isVisible?: true
+  publishStartAt?: true
+  publishEndAt?: true
   createdAt?: true
   updatedAt?: true
+  createdBy?: true
+  updatedBy?: true
+  deletedAt?: true
+  versionNumber?: true
 }
 
 export type SectionCountAggregateInputType = {
   id?: true
   pageId?: true
   type?: true
+  label?: true
   order?: true
   isVisible?: true
   props?: true
+  mobileProps?: true
+  customStyles?: true
+  publishStartAt?: true
+  publishEndAt?: true
   createdAt?: true
   updatedAt?: true
+  createdBy?: true
+  updatedBy?: true
+  deletedAt?: true
+  versionNumber?: true
   _all?: true
 }
 
@@ -197,11 +247,20 @@ export type SectionGroupByOutputType = {
   id: string
   pageId: string
   type: string
+  label: string | null
   order: number
   isVisible: boolean
   props: runtime.JsonValue
+  mobileProps: runtime.JsonValue | null
+  customStyles: runtime.JsonValue | null
+  publishStartAt: Date | null
+  publishEndAt: Date | null
   createdAt: Date
   updatedAt: Date
+  createdBy: string | null
+  updatedBy: string | null
+  deletedAt: Date | null
+  versionNumber: number
   _count: SectionCountAggregateOutputType | null
   _avg: SectionAvgAggregateOutputType | null
   _sum: SectionSumAggregateOutputType | null
@@ -231,26 +290,46 @@ export type SectionWhereInput = {
   id?: Prisma.StringFilter<"Section"> | string
   pageId?: Prisma.StringFilter<"Section"> | string
   type?: Prisma.StringFilter<"Section"> | string
+  label?: Prisma.StringNullableFilter<"Section"> | string | null
   order?: Prisma.IntFilter<"Section"> | number
   isVisible?: Prisma.BoolFilter<"Section"> | boolean
   props?: Prisma.JsonFilter<"Section">
+  mobileProps?: Prisma.JsonNullableFilter<"Section">
+  customStyles?: Prisma.JsonNullableFilter<"Section">
+  publishStartAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  publishEndAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
+  createdBy?: Prisma.StringNullableFilter<"Section"> | string | null
+  updatedBy?: Prisma.StringNullableFilter<"Section"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  versionNumber?: Prisma.IntFilter<"Section"> | number
   page?: Prisma.XOR<Prisma.PageScalarRelationFilter, Prisma.PageWhereInput>
   media?: Prisma.MediaListRelationFilter
+  versions?: Prisma.SectionVersionListRelationFilter
 }
 
 export type SectionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  label?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   isVisible?: Prisma.SortOrder
   props?: Prisma.SortOrder
+  mobileProps?: Prisma.SortOrderInput | Prisma.SortOrder
+  customStyles?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishStartAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishEndAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
   page?: Prisma.PageOrderByWithRelationInput
   media?: Prisma.MediaOrderByRelationAggregateInput
+  versions?: Prisma.SectionVersionOrderByRelationAggregateInput
 }
 
 export type SectionWhereUniqueInput = Prisma.AtLeast<{
@@ -260,24 +339,43 @@ export type SectionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SectionWhereInput | Prisma.SectionWhereInput[]
   pageId?: Prisma.StringFilter<"Section"> | string
   type?: Prisma.StringFilter<"Section"> | string
+  label?: Prisma.StringNullableFilter<"Section"> | string | null
   order?: Prisma.IntFilter<"Section"> | number
   isVisible?: Prisma.BoolFilter<"Section"> | boolean
   props?: Prisma.JsonFilter<"Section">
+  mobileProps?: Prisma.JsonNullableFilter<"Section">
+  customStyles?: Prisma.JsonNullableFilter<"Section">
+  publishStartAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  publishEndAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
+  createdBy?: Prisma.StringNullableFilter<"Section"> | string | null
+  updatedBy?: Prisma.StringNullableFilter<"Section"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  versionNumber?: Prisma.IntFilter<"Section"> | number
   page?: Prisma.XOR<Prisma.PageScalarRelationFilter, Prisma.PageWhereInput>
   media?: Prisma.MediaListRelationFilter
+  versions?: Prisma.SectionVersionListRelationFilter
 }, "id">
 
 export type SectionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  label?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   isVisible?: Prisma.SortOrder
   props?: Prisma.SortOrder
+  mobileProps?: Prisma.SortOrderInput | Prisma.SortOrder
+  customStyles?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishStartAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishEndAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
   _count?: Prisma.SectionCountOrderByAggregateInput
   _avg?: Prisma.SectionAvgOrderByAggregateInput
   _max?: Prisma.SectionMaxOrderByAggregateInput
@@ -292,91 +390,167 @@ export type SectionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Section"> | string
   pageId?: Prisma.StringWithAggregatesFilter<"Section"> | string
   type?: Prisma.StringWithAggregatesFilter<"Section"> | string
+  label?: Prisma.StringNullableWithAggregatesFilter<"Section"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"Section"> | number
   isVisible?: Prisma.BoolWithAggregatesFilter<"Section"> | boolean
   props?: Prisma.JsonWithAggregatesFilter<"Section">
+  mobileProps?: Prisma.JsonNullableWithAggregatesFilter<"Section">
+  customStyles?: Prisma.JsonNullableWithAggregatesFilter<"Section">
+  publishStartAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Section"> | Date | string | null
+  publishEndAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Section"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Section"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Section"> | Date | string
+  createdBy?: Prisma.StringNullableWithAggregatesFilter<"Section"> | string | null
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Section"> | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Section"> | Date | string | null
+  versionNumber?: Prisma.IntWithAggregatesFilter<"Section"> | number
 }
 
 export type SectionCreateInput = {
   id?: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
   page: Prisma.PageCreateNestedOneWithoutSectionsInput
   media?: Prisma.MediaCreateNestedManyWithoutSectionInput
+  versions?: Prisma.SectionVersionCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateInput = {
   id?: string
   pageId: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutSectionInput
+  versions?: Prisma.SectionVersionUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
   page?: Prisma.PageUpdateOneRequiredWithoutSectionsNestedInput
   media?: Prisma.MediaUpdateManyWithoutSectionNestedInput
+  versions?: Prisma.SectionVersionUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
   media?: Prisma.MediaUncheckedUpdateManyWithoutSectionNestedInput
+  versions?: Prisma.SectionVersionUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionCreateManyInput = {
   id?: string
   pageId: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
 }
 
 export type SectionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SectionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SectionListRelationFilter = {
@@ -393,39 +567,69 @@ export type SectionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  label?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isVisible?: Prisma.SortOrder
   props?: Prisma.SortOrder
+  mobileProps?: Prisma.SortOrder
+  customStyles?: Prisma.SortOrder
+  publishStartAt?: Prisma.SortOrder
+  publishEndAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
 }
 
 export type SectionAvgOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
 }
 
 export type SectionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  label?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isVisible?: Prisma.SortOrder
+  publishStartAt?: Prisma.SortOrder
+  publishEndAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
 }
 
 export type SectionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  label?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isVisible?: Prisma.SortOrder
+  publishStartAt?: Prisma.SortOrder
+  publishEndAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
 }
 
 export type SectionSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  versionNumber?: Prisma.SortOrder
+}
+
+export type SectionScalarRelationFilter = {
+  is?: Prisma.SectionWhereInput
+  isNot?: Prisma.SectionWhereInput
 }
 
 export type SectionNullableScalarRelationFilter = {
@@ -475,16 +679,18 @@ export type SectionUncheckedUpdateManyWithoutPageNestedInput = {
   deleteMany?: Prisma.SectionScalarWhereInput | Prisma.SectionScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type SectionCreateNestedOneWithoutVersionsInput = {
+  create?: Prisma.XOR<Prisma.SectionCreateWithoutVersionsInput, Prisma.SectionUncheckedCreateWithoutVersionsInput>
+  connectOrCreate?: Prisma.SectionCreateOrConnectWithoutVersionsInput
+  connect?: Prisma.SectionWhereUniqueInput
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type SectionUpdateOneRequiredWithoutVersionsNestedInput = {
+  create?: Prisma.XOR<Prisma.SectionCreateWithoutVersionsInput, Prisma.SectionUncheckedCreateWithoutVersionsInput>
+  connectOrCreate?: Prisma.SectionCreateOrConnectWithoutVersionsInput
+  upsert?: Prisma.SectionUpsertWithoutVersionsInput
+  connect?: Prisma.SectionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SectionUpdateToOneWithWhereWithoutVersionsInput, Prisma.SectionUpdateWithoutVersionsInput>, Prisma.SectionUncheckedUpdateWithoutVersionsInput>
 }
 
 export type SectionCreateNestedOneWithoutMediaInput = {
@@ -506,23 +712,43 @@ export type SectionUpdateOneWithoutMediaNestedInput = {
 export type SectionCreateWithoutPageInput = {
   id?: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
   media?: Prisma.MediaCreateNestedManyWithoutSectionInput
+  versions?: Prisma.SectionVersionCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateWithoutPageInput = {
   id?: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
   media?: Prisma.MediaUncheckedCreateNestedManyWithoutSectionInput
+  versions?: Prisma.SectionVersionUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionCreateOrConnectWithoutPageInput = {
@@ -558,33 +784,162 @@ export type SectionScalarWhereInput = {
   id?: Prisma.StringFilter<"Section"> | string
   pageId?: Prisma.StringFilter<"Section"> | string
   type?: Prisma.StringFilter<"Section"> | string
+  label?: Prisma.StringNullableFilter<"Section"> | string | null
   order?: Prisma.IntFilter<"Section"> | number
   isVisible?: Prisma.BoolFilter<"Section"> | boolean
   props?: Prisma.JsonFilter<"Section">
+  mobileProps?: Prisma.JsonNullableFilter<"Section">
+  customStyles?: Prisma.JsonNullableFilter<"Section">
+  publishStartAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  publishEndAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
+  createdBy?: Prisma.StringNullableFilter<"Section"> | string | null
+  updatedBy?: Prisma.StringNullableFilter<"Section"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Section"> | Date | string | null
+  versionNumber?: Prisma.IntFilter<"Section"> | number
+}
+
+export type SectionCreateWithoutVersionsInput = {
+  id?: string
+  type: string
+  label?: string | null
+  order: number
+  isVisible?: boolean
+  props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
+  page: Prisma.PageCreateNestedOneWithoutSectionsInput
+  media?: Prisma.MediaCreateNestedManyWithoutSectionInput
+}
+
+export type SectionUncheckedCreateWithoutVersionsInput = {
+  id?: string
+  pageId: string
+  type: string
+  label?: string | null
+  order: number
+  isVisible?: boolean
+  props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
+  media?: Prisma.MediaUncheckedCreateNestedManyWithoutSectionInput
+}
+
+export type SectionCreateOrConnectWithoutVersionsInput = {
+  where: Prisma.SectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SectionCreateWithoutVersionsInput, Prisma.SectionUncheckedCreateWithoutVersionsInput>
+}
+
+export type SectionUpsertWithoutVersionsInput = {
+  update: Prisma.XOR<Prisma.SectionUpdateWithoutVersionsInput, Prisma.SectionUncheckedUpdateWithoutVersionsInput>
+  create: Prisma.XOR<Prisma.SectionCreateWithoutVersionsInput, Prisma.SectionUncheckedCreateWithoutVersionsInput>
+  where?: Prisma.SectionWhereInput
+}
+
+export type SectionUpdateToOneWithWhereWithoutVersionsInput = {
+  where?: Prisma.SectionWhereInput
+  data: Prisma.XOR<Prisma.SectionUpdateWithoutVersionsInput, Prisma.SectionUncheckedUpdateWithoutVersionsInput>
+}
+
+export type SectionUpdateWithoutVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  page?: Prisma.PageUpdateOneRequiredWithoutSectionsNestedInput
+  media?: Prisma.MediaUpdateManyWithoutSectionNestedInput
+}
+
+export type SectionUncheckedUpdateWithoutVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  pageId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  media?: Prisma.MediaUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionCreateWithoutMediaInput = {
   id?: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
   page: Prisma.PageCreateNestedOneWithoutSectionsInput
+  versions?: Prisma.SectionVersionCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateWithoutMediaInput = {
   id?: string
   pageId: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
+  versions?: Prisma.SectionVersionUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionCreateOrConnectWithoutMediaInput = {
@@ -606,65 +961,123 @@ export type SectionUpdateToOneWithWhereWithoutMediaInput = {
 export type SectionUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
   page?: Prisma.PageUpdateOneRequiredWithoutSectionsNestedInput
+  versions?: Prisma.SectionVersionUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateWithoutMediaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  versions?: Prisma.SectionVersionUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionCreateManyPageInput = {
   id?: string
   type: string
+  label?: string | null
   order: number
   isVisible?: boolean
   props: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Date | string | null
+  publishEndAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy?: string | null
+  updatedBy?: string | null
+  deletedAt?: Date | string | null
+  versionNumber?: number
 }
 
 export type SectionUpdateWithoutPageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
   media?: Prisma.MediaUpdateManyWithoutSectionNestedInput
+  versions?: Prisma.SectionVersionUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateWithoutPageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
   media?: Prisma.MediaUncheckedUpdateManyWithoutSectionNestedInput
+  versions?: Prisma.SectionVersionUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateManyWithoutPageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isVisible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   props?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mobileProps?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  customStyles?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  publishStartAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishEndAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versionNumber?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -674,10 +1087,12 @@ export type SectionUncheckedUpdateManyWithoutPageInput = {
 
 export type SectionCountOutputType = {
   media: number
+  versions: number
 }
 
 export type SectionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | SectionCountOutputTypeCountMediaArgs
+  versions?: boolean | SectionCountOutputTypeCountVersionsArgs
 }
 
 /**
@@ -697,18 +1112,35 @@ export type SectionCountOutputTypeCountMediaArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.MediaWhereInput
 }
 
+/**
+ * SectionCountOutputType without action
+ */
+export type SectionCountOutputTypeCountVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SectionVersionWhereInput
+}
+
 
 export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   pageId?: boolean
   type?: boolean
+  label?: boolean
   order?: boolean
   isVisible?: boolean
   props?: boolean
+  mobileProps?: boolean
+  customStyles?: boolean
+  publishStartAt?: boolean
+  publishEndAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
+  deletedAt?: boolean
+  versionNumber?: boolean
   page?: boolean | Prisma.PageDefaultArgs<ExtArgs>
   media?: boolean | Prisma.Section$mediaArgs<ExtArgs>
+  versions?: boolean | Prisma.Section$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.SectionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
 
@@ -716,11 +1148,20 @@ export type SectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   pageId?: boolean
   type?: boolean
+  label?: boolean
   order?: boolean
   isVisible?: boolean
   props?: boolean
+  mobileProps?: boolean
+  customStyles?: boolean
+  publishStartAt?: boolean
+  publishEndAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
+  deletedAt?: boolean
+  versionNumber?: boolean
   page?: boolean | Prisma.PageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
 
@@ -728,11 +1169,20 @@ export type SectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   pageId?: boolean
   type?: boolean
+  label?: boolean
   order?: boolean
   isVisible?: boolean
   props?: boolean
+  mobileProps?: boolean
+  customStyles?: boolean
+  publishStartAt?: boolean
+  publishEndAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
+  deletedAt?: boolean
+  versionNumber?: boolean
   page?: boolean | Prisma.PageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
 
@@ -740,17 +1190,27 @@ export type SectionSelectScalar = {
   id?: boolean
   pageId?: boolean
   type?: boolean
+  label?: boolean
   order?: boolean
   isVisible?: boolean
   props?: boolean
+  mobileProps?: boolean
+  customStyles?: boolean
+  publishStartAt?: boolean
+  publishEndAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
+  deletedAt?: boolean
+  versionNumber?: boolean
 }
 
-export type SectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pageId" | "type" | "order" | "isVisible" | "props" | "createdAt" | "updatedAt", ExtArgs["result"]["section"]>
+export type SectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pageId" | "type" | "label" | "order" | "isVisible" | "props" | "mobileProps" | "customStyles" | "publishStartAt" | "publishEndAt" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "deletedAt" | "versionNumber", ExtArgs["result"]["section"]>
 export type SectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   page?: boolean | Prisma.PageDefaultArgs<ExtArgs>
   media?: boolean | Prisma.Section$mediaArgs<ExtArgs>
+  versions?: boolean | Prisma.Section$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.SectionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -765,16 +1225,26 @@ export type $SectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     page: Prisma.$PagePayload<ExtArgs>
     media: Prisma.$MediaPayload<ExtArgs>[]
+    versions: Prisma.$SectionVersionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     pageId: string
     type: string
+    label: string | null
     order: number
     isVisible: boolean
     props: runtime.JsonValue
+    mobileProps: runtime.JsonValue | null
+    customStyles: runtime.JsonValue | null
+    publishStartAt: Date | null
+    publishEndAt: Date | null
     createdAt: Date
     updatedAt: Date
+    createdBy: string | null
+    updatedBy: string | null
+    deletedAt: Date | null
+    versionNumber: number
   }, ExtArgs["result"]["section"]>
   composites: {}
 }
@@ -1171,6 +1641,7 @@ export interface Prisma__SectionClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   page<T extends Prisma.PageDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PageDefaultArgs<ExtArgs>>): Prisma.Prisma__PageClient<runtime.Types.Result.GetResult<Prisma.$PagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   media<T extends Prisma.Section$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Section$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  versions<T extends Prisma.Section$versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Section$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1203,11 +1674,20 @@ export interface SectionFieldRefs {
   readonly id: Prisma.FieldRef<"Section", 'String'>
   readonly pageId: Prisma.FieldRef<"Section", 'String'>
   readonly type: Prisma.FieldRef<"Section", 'String'>
+  readonly label: Prisma.FieldRef<"Section", 'String'>
   readonly order: Prisma.FieldRef<"Section", 'Int'>
   readonly isVisible: Prisma.FieldRef<"Section", 'Boolean'>
   readonly props: Prisma.FieldRef<"Section", 'Json'>
+  readonly mobileProps: Prisma.FieldRef<"Section", 'Json'>
+  readonly customStyles: Prisma.FieldRef<"Section", 'Json'>
+  readonly publishStartAt: Prisma.FieldRef<"Section", 'DateTime'>
+  readonly publishEndAt: Prisma.FieldRef<"Section", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Section", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Section", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"Section", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Section", 'String'>
+  readonly deletedAt: Prisma.FieldRef<"Section", 'DateTime'>
+  readonly versionNumber: Prisma.FieldRef<"Section", 'Int'>
 }
     
 
@@ -1630,6 +2110,30 @@ export type Section$mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.MediaScalarFieldEnum | Prisma.MediaScalarFieldEnum[]
+}
+
+/**
+ * Section.versions
+ */
+export type Section$versionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SectionVersion
+   */
+  select?: Prisma.SectionVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SectionVersion
+   */
+  omit?: Prisma.SectionVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SectionVersionInclude<ExtArgs> | null
+  where?: Prisma.SectionVersionWhereInput
+  orderBy?: Prisma.SectionVersionOrderByWithRelationInput | Prisma.SectionVersionOrderByWithRelationInput[]
+  cursor?: Prisma.SectionVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SectionVersionScalarFieldEnum | Prisma.SectionVersionScalarFieldEnum[]
 }
 
 /**

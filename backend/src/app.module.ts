@@ -9,19 +9,21 @@ import { AuthModule } from './auth/auth.module';
 import { PagesModule } from './pages/pages.module';
 import { MediaModule } from './media/media.module';
 import { AuditModule } from './audit/audit.module';
+import { MemberModule } from './member/member.module'; // ✅ Make sure this is imported
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ThrottlerModule.forRoot([{
-      ttl: 60000,      // 1 minute window
-      limit: 100,      // max 100 requests per minute per IP
+      ttl: 60000,
+      limit: 100,
     }]),
     PrismaModule,
     AuthModule,
     PagesModule,
     MediaModule,
     AuditModule,
+    MemberModule, // ✅ Make sure this is in the imports array
   ],
   controllers: [AppController],
   providers: [

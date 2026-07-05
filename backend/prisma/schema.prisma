@@ -194,6 +194,27 @@ model Media {
   section     Section?  @relation(fields: [sectionId], references: [id], onDelete: SetNull)
 }
 
+model Member {
+  id          String   @id @default(uuid())
+  name        String
+  city        String
+  state       String?
+  country     String   @default("USA")
+  website     String?
+  logo        String?
+  description String?
+  email       String?
+  phone       String?
+  address     String?
+  category    String   @default("member")
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("Member")
+  @@index([category, isActive, sortOrder])
+}
 model AuditLog {
   id          String       @id @default(uuid())
   

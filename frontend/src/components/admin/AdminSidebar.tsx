@@ -4,13 +4,14 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { LayoutDashboard, FileText, Image, LogOut, Settings } from 'lucide-react';
-import { cn } from '@/src/lib/utils'; // Assuming you have this utility
+import { LayoutDashboard, FileText, Image, LogOut, Settings, Users } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Pages', href: '/admin/pages', icon: FileText },
   { name: 'Media', href: '/admin/media', icon: Image },
+  { name: 'Members', href: '/admin/members', icon: Users }, // ✅ Added Members
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 

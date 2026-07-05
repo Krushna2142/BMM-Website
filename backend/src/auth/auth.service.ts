@@ -68,7 +68,7 @@ export class AuthService {
       });
     } catch (error) {
       // Don't throw - audit logging should never break the main operation
-      console.error('Failed to create login audit log:', error.message);
+      console.error('Failed to create login audit log:', error);
     }
   }
 

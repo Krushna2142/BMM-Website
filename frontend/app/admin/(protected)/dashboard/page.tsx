@@ -1,11 +1,8 @@
-// frontend/app/admin/(protected)/dashboard/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Cookies from 'js-cookie';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+import api from '@/src/lib/api';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -20,46 +17,11 @@ export default function DashboardPage() {
 
   const fetchStats = async () => {
     try {
-      const token = Cookies.get('bmm_admin_token');
-      
-      if (!token) {
-        // No token, redirect to login
-        window.location.href = '/admin/login';
-        return;
-      }
-      
-      const headers = { Authorization: `Bearer ${token}` };
-      
-      // Fetch pages count
-      const pagesRes = await fetch(`${API_BASE_URL}/api/pages`, { headers });
-      
-      if (pagesRes.status === 401) {
-        // Token is invalid or expired
-        Cookies.remove('bmm_admin_token');
-        Cookies.remove('bmm_admin_user');
-        window.location.href = '/admin/login';
-        return;
-      }
-      
-      if (pagesRes.ok) {
-        const pagesData = await pagesRes.json();
-        setStats(prev => ({ ...prev, totalPages: pagesData.length }));
-      }
+      const pagesRes = await api.get('/pages');
+      setStats(prev => ({ ...prev, totalPages: pagesRes.data.length }));
 
-      // Fetch media count
-      const mediaRes = await fetch(`${API_BASE_URL}/api/media/stats`, { headers });
-      
-      if (mediaRes.status === 401) {
-        Cookies.remove('bmm_admin_token');
-        Cookies.remove('bmm_admin_user');
-        window.location.href = '/admin/login';
-        return;
-      }
-      
-      if (mediaRes.ok) {
-        const mediaData = await mediaRes.json();
-        setStats(prev => ({ ...prev, totalMedia: mediaData.totalFiles || 0 }));
-      }
+      const mediaRes = await api.get('/media/stats');
+      setStats(prev => ({ ...prev, totalMedia: mediaRes.data.totalFiles || 0 }));
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }

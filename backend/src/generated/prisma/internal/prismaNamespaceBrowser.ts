@@ -53,8 +53,13 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   AdminUser: 'AdminUser',
   Page: 'Page',
+  PageVersion: 'PageVersion',
   Section: 'Section',
-  Media: 'Media'
+  SectionVersion: 'SectionVersion',
+  SectionTemplate: 'SectionTemplate',
+  Media: 'Media',
+  Member: 'Member',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -79,6 +84,8 @@ export const AdminUserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   role: 'role',
+  isActive: 'isActive',
+  lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -90,39 +97,152 @@ export const PageScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
+  description: 'description',
   status: 'status',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  seoKeywords: 'seoKeywords',
+  publishedAt: 'publishedAt',
+  publishedBy: 'publishedBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
+
+
+export const PageVersionScalarFieldEnum = {
+  id: 'id',
+  pageId: 'pageId',
+  versionNumber: 'versionNumber',
+  status: 'status',
+  title: 'title',
+  description: 'description',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  changeSummary: 'changeSummary',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+} as const
+
+export type PageVersionScalarFieldEnum = (typeof PageVersionScalarFieldEnum)[keyof typeof PageVersionScalarFieldEnum]
 
 
 export const SectionScalarFieldEnum = {
   id: 'id',
   pageId: 'pageId',
   type: 'type',
+  label: 'label',
   order: 'order',
   isVisible: 'isVisible',
   props: 'props',
+  mobileProps: 'mobileProps',
+  customStyles: 'customStyles',
+  publishStartAt: 'publishStartAt',
+  publishEndAt: 'publishEndAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  deletedAt: 'deletedAt',
+  versionNumber: 'versionNumber'
+} as const
+
+export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
+
+
+export const SectionVersionScalarFieldEnum = {
+  id: 'id',
+  sectionId: 'sectionId',
+  versionNumber: 'versionNumber',
+  isVisible: 'isVisible',
+  order: 'order',
+  props: 'props',
+  label: 'label',
+  changeSummary: 'changeSummary',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+} as const
+
+export type SectionVersionScalarFieldEnum = (typeof SectionVersionScalarFieldEnum)[keyof typeof SectionVersionScalarFieldEnum]
+
+
+export const SectionTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  sectionType: 'sectionType',
+  description: 'description',
+  defaultProps: 'defaultProps',
+  thumbnailUrl: 'thumbnailUrl',
+  isSystem: 'isSystem',
+  category: 'category',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
+export type SectionTemplateScalarFieldEnum = (typeof SectionTemplateScalarFieldEnum)[keyof typeof SectionTemplateScalarFieldEnum]
 
 
 export const MediaScalarFieldEnum = {
   id: 'id',
   sectionId: 'sectionId',
   filename: 'filename',
+  originalName: 'originalName',
   url: 'url',
   mimeType: 'mimeType',
   size: 'size',
-  createdAt: 'createdAt'
+  width: 'width',
+  height: 'height',
+  altText: 'altText',
+  title: 'title',
+  folder: 'folder',
+  createdAt: 'createdAt',
+  uploadedBy: 'uploadedBy'
 } as const
 
 export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
+
+
+export const MemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  website: 'website',
+  logo: 'logo',
+  description: 'description',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  category: 'category',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  userEmail: 'userEmail',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  entityLabel: 'entityLabel',
+  oldValues: 'oldValues',
+  newValues: 'newValues',
+  changeSummary: 'changeSummary',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -140,12 +260,28 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const JsonNullValueFilter = {
@@ -155,12 +291,4 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

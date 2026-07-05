@@ -28,27 +28,46 @@ export type PageMinAggregateOutputType = {
   id: string | null
   slug: string | null
   title: string | null
+  description: string | null
   status: $Enums.PageStatus | null
+  seoTitle: string | null
+  seoDescription: string | null
+  publishedAt: Date | null
+  publishedBy: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type PageMaxAggregateOutputType = {
   id: string | null
   slug: string | null
   title: string | null
+  description: string | null
   status: $Enums.PageStatus | null
+  seoTitle: string | null
+  seoDescription: string | null
+  publishedAt: Date | null
+  publishedBy: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type PageCountAggregateOutputType = {
   id: number
   slug: number
   title: number
+  description: number
   status: number
+  seoTitle: number
+  seoDescription: number
+  seoKeywords: number
+  publishedAt: number
+  publishedBy: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -57,27 +76,46 @@ export type PageMinAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  description?: true
   status?: true
+  seoTitle?: true
+  seoDescription?: true
+  publishedAt?: true
+  publishedBy?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type PageMaxAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  description?: true
   status?: true
+  seoTitle?: true
+  seoDescription?: true
+  publishedAt?: true
+  publishedBy?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type PageCountAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  description?: true
   status?: true
+  seoTitle?: true
+  seoDescription?: true
+  seoKeywords?: true
+  publishedAt?: true
+  publishedBy?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -157,9 +195,16 @@ export type PageGroupByOutputType = {
   id: string
   slug: string
   title: string
+  description: string | null
   status: $Enums.PageStatus
+  seoTitle: string | null
+  seoDescription: string | null
+  seoKeywords: string[]
+  publishedAt: Date | null
+  publishedBy: string | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: PageCountAggregateOutputType | null
   _min: PageMinAggregateOutputType | null
   _max: PageMaxAggregateOutputType | null
@@ -187,20 +232,36 @@ export type PageWhereInput = {
   id?: Prisma.StringFilter<"Page"> | string
   slug?: Prisma.StringFilter<"Page"> | string
   title?: Prisma.StringFilter<"Page"> | string
+  description?: Prisma.StringNullableFilter<"Page"> | string | null
   status?: Prisma.EnumPageStatusFilter<"Page"> | $Enums.PageStatus
+  seoTitle?: Prisma.StringNullableFilter<"Page"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Page"> | string | null
+  seoKeywords?: Prisma.StringNullableListFilter<"Page">
+  publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
+  publishedBy?: Prisma.StringNullableFilter<"Page"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
   sections?: Prisma.SectionListRelationFilter
+  versions?: Prisma.PageVersionListRelationFilter
 }
 
 export type PageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sections?: Prisma.SectionOrderByRelationAggregateInput
+  versions?: Prisma.PageVersionOrderByRelationAggregateInput
 }
 
 export type PageWhereUniqueInput = Prisma.AtLeast<{
@@ -210,19 +271,34 @@ export type PageWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PageWhereInput[]
   NOT?: Prisma.PageWhereInput | Prisma.PageWhereInput[]
   title?: Prisma.StringFilter<"Page"> | string
+  description?: Prisma.StringNullableFilter<"Page"> | string | null
   status?: Prisma.EnumPageStatusFilter<"Page"> | $Enums.PageStatus
+  seoTitle?: Prisma.StringNullableFilter<"Page"> | string | null
+  seoDescription?: Prisma.StringNullableFilter<"Page"> | string | null
+  seoKeywords?: Prisma.StringNullableListFilter<"Page">
+  publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
+  publishedBy?: Prisma.StringNullableFilter<"Page"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
   sections?: Prisma.SectionListRelationFilter
+  versions?: Prisma.PageVersionListRelationFilter
 }, "id" | "slug">
 
 export type PageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  publishedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PageCountOrderByAggregateInput
   _max?: Prisma.PageMaxOrderByAggregateInput
   _min?: Prisma.PageMinOrderByAggregateInput
@@ -235,103 +311,190 @@ export type PageScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Page"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Page"> | string
   title?: Prisma.StringWithAggregatesFilter<"Page"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null
   status?: Prisma.EnumPageStatusWithAggregatesFilter<"Page"> | $Enums.PageStatus
+  seoTitle?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null
+  seoDescription?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null
+  seoKeywords?: Prisma.StringNullableListFilter<"Page">
+  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Page"> | Date | string | null
+  publishedBy?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Page"> | Date | string | null
 }
 
 export type PageCreateInput = {
   id?: string
   slug: string
   title: string
+  description?: string | null
   status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   sections?: Prisma.SectionCreateNestedManyWithoutPageInput
+  versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput
 }
 
 export type PageUncheckedCreateInput = {
   id?: string
   slug: string
   title: string
+  description?: string | null
   status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutPageInput
+  versions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutPageInput
 }
 
 export type PageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sections?: Prisma.SectionUpdateManyWithoutPageNestedInput
+  versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput
 }
 
 export type PageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sections?: Prisma.SectionUncheckedUpdateManyWithoutPageNestedInput
+  versions?: Prisma.PageVersionUncheckedUpdateManyWithoutPageNestedInput
 }
 
 export type PageCreateManyInput = {
   id?: string
   slug: string
   title: string
+  description?: string | null
   status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type PageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type PageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type PageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
+  seoKeywords?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publishedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type PageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publishedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type PageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  seoTitle?: Prisma.SortOrder
+  seoDescription?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  publishedBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type PageScalarRelationFilter = {
@@ -339,8 +502,35 @@ export type PageScalarRelationFilter = {
   isNot?: Prisma.PageWhereInput
 }
 
+export type PageCreateseoKeywordsInput = {
+  set: string[]
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type EnumPageStatusFieldUpdateOperationsInput = {
   set?: $Enums.PageStatus
+}
+
+export type PageUpdateseoKeywordsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type PageCreateNestedOneWithoutVersionsInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutVersionsInput, Prisma.PageUncheckedCreateWithoutVersionsInput>
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutVersionsInput
+  connect?: Prisma.PageWhereUniqueInput
+}
+
+export type PageUpdateOneRequiredWithoutVersionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutVersionsInput, Prisma.PageUncheckedCreateWithoutVersionsInput>
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutVersionsInput
+  upsert?: Prisma.PageUpsertWithoutVersionsInput
+  connect?: Prisma.PageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PageUpdateToOneWithWhereWithoutVersionsInput, Prisma.PageUpdateWithoutVersionsInput>, Prisma.PageUncheckedUpdateWithoutVersionsInput>
 }
 
 export type PageCreateNestedOneWithoutSectionsInput = {
@@ -357,22 +547,122 @@ export type PageUpdateOneRequiredWithoutSectionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PageUpdateToOneWithWhereWithoutSectionsInput, Prisma.PageUpdateWithoutSectionsInput>, Prisma.PageUncheckedUpdateWithoutSectionsInput>
 }
 
+export type PageCreateWithoutVersionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description?: string | null
+  status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  sections?: Prisma.SectionCreateNestedManyWithoutPageInput
+}
+
+export type PageUncheckedCreateWithoutVersionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description?: string | null
+  status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutPageInput
+}
+
+export type PageCreateOrConnectWithoutVersionsInput = {
+  where: Prisma.PageWhereUniqueInput
+  create: Prisma.XOR<Prisma.PageCreateWithoutVersionsInput, Prisma.PageUncheckedCreateWithoutVersionsInput>
+}
+
+export type PageUpsertWithoutVersionsInput = {
+  update: Prisma.XOR<Prisma.PageUpdateWithoutVersionsInput, Prisma.PageUncheckedUpdateWithoutVersionsInput>
+  create: Prisma.XOR<Prisma.PageCreateWithoutVersionsInput, Prisma.PageUncheckedCreateWithoutVersionsInput>
+  where?: Prisma.PageWhereInput
+}
+
+export type PageUpdateToOneWithWhereWithoutVersionsInput = {
+  where?: Prisma.PageWhereInput
+  data: Prisma.XOR<Prisma.PageUpdateWithoutVersionsInput, Prisma.PageUncheckedUpdateWithoutVersionsInput>
+}
+
+export type PageUpdateWithoutVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sections?: Prisma.SectionUpdateManyWithoutPageNestedInput
+}
+
+export type PageUncheckedUpdateWithoutVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutPageNestedInput
+}
+
 export type PageCreateWithoutSectionsInput = {
   id?: string
   slug: string
   title: string
+  description?: string | null
   status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput
 }
 
 export type PageUncheckedCreateWithoutSectionsInput = {
   id?: string
   slug: string
   title: string
+  description?: string | null
   status?: $Enums.PageStatus
+  seoTitle?: string | null
+  seoDescription?: string | null
+  seoKeywords?: Prisma.PageCreateseoKeywordsInput | string[]
+  publishedAt?: Date | string | null
+  publishedBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  versions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutPageInput
 }
 
 export type PageCreateOrConnectWithoutSectionsInput = {
@@ -395,18 +685,34 @@ export type PageUpdateWithoutSectionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput
 }
 
 export type PageUncheckedUpdateWithoutSectionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  seoTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seoKeywords?: Prisma.PageUpdateseoKeywordsInput | string[]
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  versions?: Prisma.PageVersionUncheckedUpdateManyWithoutPageNestedInput
 }
 
 
@@ -416,10 +722,12 @@ export type PageUncheckedUpdateWithoutSectionsInput = {
 
 export type PageCountOutputType = {
   sections: number
+  versions: number
 }
 
 export type PageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sections?: boolean | PageCountOutputTypeCountSectionsArgs
+  versions?: boolean | PageCountOutputTypeCountVersionsArgs
 }
 
 /**
@@ -439,15 +747,30 @@ export type PageCountOutputTypeCountSectionsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.SectionWhereInput
 }
 
+/**
+ * PageCountOutputType without action
+ */
+export type PageCountOutputTypeCountVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PageVersionWhereInput
+}
+
 
 export type PageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   slug?: boolean
   title?: boolean
+  description?: boolean
   status?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
+  publishedAt?: boolean
+  publishedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   sections?: boolean | Prisma.Page$sectionsArgs<ExtArgs>
+  versions?: boolean | Prisma.Page$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.PageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["page"]>
 
@@ -455,32 +778,54 @@ export type PageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   slug?: boolean
   title?: boolean
+  description?: boolean
   status?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
+  publishedAt?: boolean
+  publishedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["page"]>
 
 export type PageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   slug?: boolean
   title?: boolean
+  description?: boolean
   status?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
+  publishedAt?: boolean
+  publishedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["page"]>
 
 export type PageSelectScalar = {
   id?: boolean
   slug?: boolean
   title?: boolean
+  description?: boolean
   status?: boolean
+  seoTitle?: boolean
+  seoDescription?: boolean
+  seoKeywords?: boolean
+  publishedAt?: boolean
+  publishedBy?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type PageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["page"]>
+export type PageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "status" | "seoTitle" | "seoDescription" | "seoKeywords" | "publishedAt" | "publishedBy" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["page"]>
 export type PageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sections?: boolean | Prisma.Page$sectionsArgs<ExtArgs>
+  versions?: boolean | Prisma.Page$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.PageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -490,14 +835,22 @@ export type $PagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Page"
   objects: {
     sections: Prisma.$SectionPayload<ExtArgs>[]
+    versions: Prisma.$PageVersionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     slug: string
     title: string
+    description: string | null
     status: $Enums.PageStatus
+    seoTitle: string | null
+    seoDescription: string | null
+    seoKeywords: string[]
+    publishedAt: Date | null
+    publishedBy: string | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["page"]>
   composites: {}
 }
@@ -893,6 +1246,7 @@ readonly fields: PageFieldRefs;
 export interface Prisma__PageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sections<T extends Prisma.Page$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Page$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  versions<T extends Prisma.Page$versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Page$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PageVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -925,9 +1279,16 @@ export interface PageFieldRefs {
   readonly id: Prisma.FieldRef<"Page", 'String'>
   readonly slug: Prisma.FieldRef<"Page", 'String'>
   readonly title: Prisma.FieldRef<"Page", 'String'>
+  readonly description: Prisma.FieldRef<"Page", 'String'>
   readonly status: Prisma.FieldRef<"Page", 'PageStatus'>
+  readonly seoTitle: Prisma.FieldRef<"Page", 'String'>
+  readonly seoDescription: Prisma.FieldRef<"Page", 'String'>
+  readonly seoKeywords: Prisma.FieldRef<"Page", 'String[]'>
+  readonly publishedAt: Prisma.FieldRef<"Page", 'DateTime'>
+  readonly publishedBy: Prisma.FieldRef<"Page", 'String'>
   readonly createdAt: Prisma.FieldRef<"Page", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Page", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Page", 'DateTime'>
 }
     
 
@@ -1342,6 +1703,30 @@ export type Page$sectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SectionScalarFieldEnum | Prisma.SectionScalarFieldEnum[]
+}
+
+/**
+ * Page.versions
+ */
+export type Page$versionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PageVersion
+   */
+  select?: Prisma.PageVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PageVersion
+   */
+  omit?: Prisma.PageVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PageVersionInclude<ExtArgs> | null
+  where?: Prisma.PageVersionWhereInput
+  orderBy?: Prisma.PageVersionOrderByWithRelationInput | Prisma.PageVersionOrderByWithRelationInput[]
+  cursor?: Prisma.PageVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PageVersionScalarFieldEnum | Prisma.PageVersionScalarFieldEnum[]
 }
 
 /**

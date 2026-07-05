@@ -50,12 +50,37 @@ export type AdminUser = Prisma.AdminUserModel
  */
 export type Page = Prisma.PageModel
 /**
+ * Model PageVersion
+ * 
+ */
+export type PageVersion = Prisma.PageVersionModel
+/**
  * Model Section
  * 
  */
 export type Section = Prisma.SectionModel
 /**
+ * Model SectionVersion
+ * 
+ */
+export type SectionVersion = Prisma.SectionVersionModel
+/**
+ * Model SectionTemplate
+ * 
+ */
+export type SectionTemplate = Prisma.SectionTemplateModel
+/**
  * Model Media
  * 
  */
 export type Media = Prisma.MediaModel
+/**
+ * Model Member
+ * 
+ */
+export type Member = Prisma.MemberModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

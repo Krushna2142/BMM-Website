@@ -28,80 +28,130 @@ export type AggregateMedia = {
 
 export type MediaAvgAggregateOutputType = {
   size: number | null
+  width: number | null
+  height: number | null
 }
 
 export type MediaSumAggregateOutputType = {
   size: number | null
+  width: number | null
+  height: number | null
 }
 
 export type MediaMinAggregateOutputType = {
   id: string | null
   sectionId: string | null
   filename: string | null
+  originalName: string | null
   url: string | null
   mimeType: string | null
   size: number | null
+  width: number | null
+  height: number | null
+  altText: string | null
+  title: string | null
+  folder: string | null
   createdAt: Date | null
+  uploadedBy: string | null
 }
 
 export type MediaMaxAggregateOutputType = {
   id: string | null
   sectionId: string | null
   filename: string | null
+  originalName: string | null
   url: string | null
   mimeType: string | null
   size: number | null
+  width: number | null
+  height: number | null
+  altText: string | null
+  title: string | null
+  folder: string | null
   createdAt: Date | null
+  uploadedBy: string | null
 }
 
 export type MediaCountAggregateOutputType = {
   id: number
   sectionId: number
   filename: number
+  originalName: number
   url: number
   mimeType: number
   size: number
+  width: number
+  height: number
+  altText: number
+  title: number
+  folder: number
   createdAt: number
+  uploadedBy: number
   _all: number
 }
 
 
 export type MediaAvgAggregateInputType = {
   size?: true
+  width?: true
+  height?: true
 }
 
 export type MediaSumAggregateInputType = {
   size?: true
+  width?: true
+  height?: true
 }
 
 export type MediaMinAggregateInputType = {
   id?: true
   sectionId?: true
   filename?: true
+  originalName?: true
   url?: true
   mimeType?: true
   size?: true
+  width?: true
+  height?: true
+  altText?: true
+  title?: true
+  folder?: true
   createdAt?: true
+  uploadedBy?: true
 }
 
 export type MediaMaxAggregateInputType = {
   id?: true
   sectionId?: true
   filename?: true
+  originalName?: true
   url?: true
   mimeType?: true
   size?: true
+  width?: true
+  height?: true
+  altText?: true
+  title?: true
+  folder?: true
   createdAt?: true
+  uploadedBy?: true
 }
 
 export type MediaCountAggregateInputType = {
   id?: true
   sectionId?: true
   filename?: true
+  originalName?: true
   url?: true
   mimeType?: true
   size?: true
+  width?: true
+  height?: true
+  altText?: true
+  title?: true
+  folder?: true
   createdAt?: true
+  uploadedBy?: true
   _all?: true
 }
 
@@ -195,10 +245,17 @@ export type MediaGroupByOutputType = {
   id: string
   sectionId: string | null
   filename: string
+  originalName: string | null
   url: string
   mimeType: string
   size: number
+  width: number | null
+  height: number | null
+  altText: string | null
+  title: string | null
+  folder: string
   createdAt: Date
+  uploadedBy: string | null
   _count: MediaCountAggregateOutputType | null
   _avg: MediaAvgAggregateOutputType | null
   _sum: MediaSumAggregateOutputType | null
@@ -228,10 +285,17 @@ export type MediaWhereInput = {
   id?: Prisma.StringFilter<"Media"> | string
   sectionId?: Prisma.StringNullableFilter<"Media"> | string | null
   filename?: Prisma.StringFilter<"Media"> | string
+  originalName?: Prisma.StringNullableFilter<"Media"> | string | null
   url?: Prisma.StringFilter<"Media"> | string
   mimeType?: Prisma.StringFilter<"Media"> | string
   size?: Prisma.IntFilter<"Media"> | number
+  width?: Prisma.IntNullableFilter<"Media"> | number | null
+  height?: Prisma.IntNullableFilter<"Media"> | number | null
+  altText?: Prisma.StringNullableFilter<"Media"> | string | null
+  title?: Prisma.StringNullableFilter<"Media"> | string | null
+  folder?: Prisma.StringFilter<"Media"> | string
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  uploadedBy?: Prisma.StringNullableFilter<"Media"> | string | null
   section?: Prisma.XOR<Prisma.SectionNullableScalarRelationFilter, Prisma.SectionWhereInput> | null
 }
 
@@ -239,10 +303,17 @@ export type MediaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   sectionId?: Prisma.SortOrderInput | Prisma.SortOrder
   filename?: Prisma.SortOrder
+  originalName?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrderInput | Prisma.SortOrder
+  height?: Prisma.SortOrderInput | Prisma.SortOrder
+  altText?: Prisma.SortOrderInput | Prisma.SortOrder
+  title?: Prisma.SortOrderInput | Prisma.SortOrder
+  folder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  uploadedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   section?: Prisma.SectionOrderByWithRelationInput
 }
 
@@ -253,10 +324,17 @@ export type MediaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MediaWhereInput | Prisma.MediaWhereInput[]
   sectionId?: Prisma.StringNullableFilter<"Media"> | string | null
   filename?: Prisma.StringFilter<"Media"> | string
+  originalName?: Prisma.StringNullableFilter<"Media"> | string | null
   url?: Prisma.StringFilter<"Media"> | string
   mimeType?: Prisma.StringFilter<"Media"> | string
   size?: Prisma.IntFilter<"Media"> | number
+  width?: Prisma.IntNullableFilter<"Media"> | number | null
+  height?: Prisma.IntNullableFilter<"Media"> | number | null
+  altText?: Prisma.StringNullableFilter<"Media"> | string | null
+  title?: Prisma.StringNullableFilter<"Media"> | string | null
+  folder?: Prisma.StringFilter<"Media"> | string
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  uploadedBy?: Prisma.StringNullableFilter<"Media"> | string | null
   section?: Prisma.XOR<Prisma.SectionNullableScalarRelationFilter, Prisma.SectionWhereInput> | null
 }, "id">
 
@@ -264,10 +342,17 @@ export type MediaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   sectionId?: Prisma.SortOrderInput | Prisma.SortOrder
   filename?: Prisma.SortOrder
+  originalName?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrderInput | Prisma.SortOrder
+  height?: Prisma.SortOrderInput | Prisma.SortOrder
+  altText?: Prisma.SortOrderInput | Prisma.SortOrder
+  title?: Prisma.SortOrderInput | Prisma.SortOrder
+  folder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  uploadedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MediaCountOrderByAggregateInput
   _avg?: Prisma.MediaAvgOrderByAggregateInput
   _max?: Prisma.MediaMaxOrderByAggregateInput
@@ -282,19 +367,33 @@ export type MediaScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Media"> | string
   sectionId?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
   filename?: Prisma.StringWithAggregatesFilter<"Media"> | string
+  originalName?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
   url?: Prisma.StringWithAggregatesFilter<"Media"> | string
   mimeType?: Prisma.StringWithAggregatesFilter<"Media"> | string
   size?: Prisma.IntWithAggregatesFilter<"Media"> | number
+  width?: Prisma.IntNullableWithAggregatesFilter<"Media"> | number | null
+  height?: Prisma.IntNullableWithAggregatesFilter<"Media"> | number | null
+  altText?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  title?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
+  folder?: Prisma.StringWithAggregatesFilter<"Media"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Media"> | Date | string
+  uploadedBy?: Prisma.StringNullableWithAggregatesFilter<"Media"> | string | null
 }
 
 export type MediaCreateInput = {
   id?: string
   filename: string
+  originalName?: string | null
   url: string
   mimeType: string
   size: number
+  width?: number | null
+  height?: number | null
+  altText?: string | null
+  title?: string | null
+  folder?: string
   createdAt?: Date | string
+  uploadedBy?: string | null
   section?: Prisma.SectionCreateNestedOneWithoutMediaInput
 }
 
@@ -302,19 +401,33 @@ export type MediaUncheckedCreateInput = {
   id?: string
   sectionId?: string | null
   filename: string
+  originalName?: string | null
   url: string
   mimeType: string
   size: number
+  width?: number | null
+  height?: number | null
+  altText?: string | null
+  title?: string | null
+  folder?: string
   createdAt?: Date | string
+  uploadedBy?: string | null
 }
 
 export type MediaUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.SectionUpdateOneWithoutMediaNestedInput
 }
 
@@ -322,39 +435,67 @@ export type MediaUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaCreateManyInput = {
   id?: string
   sectionId?: string | null
   filename: string
+  originalName?: string | null
   url: string
   mimeType: string
   size: number
+  width?: number | null
+  height?: number | null
+  altText?: string | null
+  title?: string | null
+  folder?: string
   createdAt?: Date | string
+  uploadedBy?: string | null
 }
 
 export type MediaUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaListRelationFilter = {
@@ -371,38 +512,63 @@ export type MediaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   filename?: Prisma.SortOrder
+  originalName?: Prisma.SortOrder
   url?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrder
+  height?: Prisma.SortOrder
+  altText?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  folder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  uploadedBy?: Prisma.SortOrder
 }
 
 export type MediaAvgOrderByAggregateInput = {
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrder
+  height?: Prisma.SortOrder
 }
 
 export type MediaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   filename?: Prisma.SortOrder
+  originalName?: Prisma.SortOrder
   url?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrder
+  height?: Prisma.SortOrder
+  altText?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  folder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  uploadedBy?: Prisma.SortOrder
 }
 
 export type MediaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sectionId?: Prisma.SortOrder
   filename?: Prisma.SortOrder
+  originalName?: Prisma.SortOrder
   url?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrder
+  height?: Prisma.SortOrder
+  altText?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  folder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  uploadedBy?: Prisma.SortOrder
 }
 
 export type MediaSumOrderByAggregateInput = {
   size?: Prisma.SortOrder
+  width?: Prisma.SortOrder
+  height?: Prisma.SortOrder
 }
 
 export type MediaCreateNestedManyWithoutSectionInput = {
@@ -447,26 +613,44 @@ export type MediaUncheckedUpdateManyWithoutSectionNestedInput = {
   deleteMany?: Prisma.MediaScalarWhereInput | Prisma.MediaScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type MediaCreateWithoutSectionInput = {
   id?: string
   filename: string
+  originalName?: string | null
   url: string
   mimeType: string
   size: number
+  width?: number | null
+  height?: number | null
+  altText?: string | null
+  title?: string | null
+  folder?: string
   createdAt?: Date | string
+  uploadedBy?: string | null
 }
 
 export type MediaUncheckedCreateWithoutSectionInput = {
   id?: string
   filename: string
+  originalName?: string | null
   url: string
   mimeType: string
   size: number
+  width?: number | null
+  height?: number | null
+  altText?: string | null
+  title?: string | null
+  folder?: string
   createdAt?: Date | string
+  uploadedBy?: string | null
 }
 
 export type MediaCreateOrConnectWithoutSectionInput = {
@@ -502,46 +686,81 @@ export type MediaScalarWhereInput = {
   id?: Prisma.StringFilter<"Media"> | string
   sectionId?: Prisma.StringNullableFilter<"Media"> | string | null
   filename?: Prisma.StringFilter<"Media"> | string
+  originalName?: Prisma.StringNullableFilter<"Media"> | string | null
   url?: Prisma.StringFilter<"Media"> | string
   mimeType?: Prisma.StringFilter<"Media"> | string
   size?: Prisma.IntFilter<"Media"> | number
+  width?: Prisma.IntNullableFilter<"Media"> | number | null
+  height?: Prisma.IntNullableFilter<"Media"> | number | null
+  altText?: Prisma.StringNullableFilter<"Media"> | string | null
+  title?: Prisma.StringNullableFilter<"Media"> | string | null
+  folder?: Prisma.StringFilter<"Media"> | string
   createdAt?: Prisma.DateTimeFilter<"Media"> | Date | string
+  uploadedBy?: Prisma.StringNullableFilter<"Media"> | string | null
 }
 
 export type MediaCreateManySectionInput = {
   id?: string
   filename: string
+  originalName?: string | null
   url: string
   mimeType: string
   size: number
+  width?: number | null
+  height?: number | null
+  altText?: string | null
+  title?: string | null
+  folder?: string
   createdAt?: Date | string
+  uploadedBy?: string | null
 }
 
 export type MediaUpdateWithoutSectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaUncheckedUpdateWithoutSectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MediaUncheckedUpdateManyWithoutSectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   filename?: Prisma.StringFieldUpdateOperationsInput | string
+  originalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  folder?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -550,10 +769,17 @@ export type MediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   id?: boolean
   sectionId?: boolean
   filename?: boolean
+  originalName?: boolean
   url?: boolean
   mimeType?: boolean
   size?: boolean
+  width?: boolean
+  height?: boolean
+  altText?: boolean
+  title?: boolean
+  folder?: boolean
   createdAt?: boolean
+  uploadedBy?: boolean
   section?: boolean | Prisma.Media$sectionArgs<ExtArgs>
 }, ExtArgs["result"]["media"]>
 
@@ -561,10 +787,17 @@ export type MediaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   sectionId?: boolean
   filename?: boolean
+  originalName?: boolean
   url?: boolean
   mimeType?: boolean
   size?: boolean
+  width?: boolean
+  height?: boolean
+  altText?: boolean
+  title?: boolean
+  folder?: boolean
   createdAt?: boolean
+  uploadedBy?: boolean
   section?: boolean | Prisma.Media$sectionArgs<ExtArgs>
 }, ExtArgs["result"]["media"]>
 
@@ -572,10 +805,17 @@ export type MediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   sectionId?: boolean
   filename?: boolean
+  originalName?: boolean
   url?: boolean
   mimeType?: boolean
   size?: boolean
+  width?: boolean
+  height?: boolean
+  altText?: boolean
+  title?: boolean
+  folder?: boolean
   createdAt?: boolean
+  uploadedBy?: boolean
   section?: boolean | Prisma.Media$sectionArgs<ExtArgs>
 }, ExtArgs["result"]["media"]>
 
@@ -583,13 +823,20 @@ export type MediaSelectScalar = {
   id?: boolean
   sectionId?: boolean
   filename?: boolean
+  originalName?: boolean
   url?: boolean
   mimeType?: boolean
   size?: boolean
+  width?: boolean
+  height?: boolean
+  altText?: boolean
+  title?: boolean
+  folder?: boolean
   createdAt?: boolean
+  uploadedBy?: boolean
 }
 
-export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sectionId" | "filename" | "url" | "mimeType" | "size" | "createdAt", ExtArgs["result"]["media"]>
+export type MediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sectionId" | "filename" | "originalName" | "url" | "mimeType" | "size" | "width" | "height" | "altText" | "title" | "folder" | "createdAt" | "uploadedBy", ExtArgs["result"]["media"]>
 export type MediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   section?: boolean | Prisma.Media$sectionArgs<ExtArgs>
 }
@@ -609,10 +856,17 @@ export type $MediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: string
     sectionId: string | null
     filename: string
+    originalName: string | null
     url: string
     mimeType: string
     size: number
+    width: number | null
+    height: number | null
+    altText: string | null
+    title: string | null
+    folder: string
     createdAt: Date
+    uploadedBy: string | null
   }, ExtArgs["result"]["media"]>
   composites: {}
 }
@@ -1040,10 +1294,17 @@ export interface MediaFieldRefs {
   readonly id: Prisma.FieldRef<"Media", 'String'>
   readonly sectionId: Prisma.FieldRef<"Media", 'String'>
   readonly filename: Prisma.FieldRef<"Media", 'String'>
+  readonly originalName: Prisma.FieldRef<"Media", 'String'>
   readonly url: Prisma.FieldRef<"Media", 'String'>
   readonly mimeType: Prisma.FieldRef<"Media", 'String'>
   readonly size: Prisma.FieldRef<"Media", 'Int'>
+  readonly width: Prisma.FieldRef<"Media", 'Int'>
+  readonly height: Prisma.FieldRef<"Media", 'Int'>
+  readonly altText: Prisma.FieldRef<"Media", 'String'>
+  readonly title: Prisma.FieldRef<"Media", 'String'>
+  readonly folder: Prisma.FieldRef<"Media", 'String'>
   readonly createdAt: Prisma.FieldRef<"Media", 'DateTime'>
+  readonly uploadedBy: Prisma.FieldRef<"Media", 'String'>
 }
     
 

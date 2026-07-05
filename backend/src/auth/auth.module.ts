@@ -5,17 +5,22 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { ConfigModule, ConfigService } from '@nestjs/config'; // ✅ ADD THIS
 
 @Module({
   imports: [
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'super_secret_key_change_me',
-      signOptions: { 
-        // Use number of seconds directly to avoid type issues
-        // 86400 = 24 hours (1 day)
-        expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '86400', 10),
-      },
+    // ✅ CHANGE THIS: Use registerAsync to inject ConfigService
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET') || 'super_secret_key_change_me',
+        signOptions: { 
+          // ✅ Cast to 'any' to bypass the strict TypeScript type check
+          expiresIn: (configService.get<string>('JWT_EXPIRES_IN') || '1d') as any,
+        },
+      }),
     }),
   ],
   providers: [AuthService, JwtStrategy],
